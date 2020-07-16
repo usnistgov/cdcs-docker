@@ -1,0 +1,90 @@
+version: "3"
+services:
+  curator_nginx:
+    image: nginx:${NGINX_VERSION}
+    container_name: ${PROJECT_NAME}_cdcs_nginx
+    restart: always
+    ports:
+      - "${NGINX_PORT_80}:80"
+      - "${NGINX_PORT_443}:443"
+    depends_on:
+      - cdcs
+    environment:
+      - HOSTNAME=${HOSTNAME}
+    volumes:
+      - cdcs_socket:/tmp/curator/
+      - cdcs_static:/srv/curator_static
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/${SERVER_CONF}.conf:/etc/nginx/conf.d/default.conf
+  curator_mongo:
+    image: mongo:${MONGO_VERSION}
+    container_name: ${PROJECT_NAME}_cdcs_mongo
+    restart: always
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_ADMIN_USER}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_ADMIN_PASS}
+      - MONGO_INITDB_DATABASE=${MONGO_DB}
+      - MONGO_USER=${MONGO_USER}
+      - MONGO_PASS=${MONGO_PASS}
+    volumes:
+      - mongo_data:/data/db/
+      - ./mongo/mongo-init.sh:/docker-entrypoint-initdb.d/mongo-init.sh:ro
+    command: "--auth"
+  curator_postgres:
+    image: postgres:${POSTGRES_VERSION}
+    container_name: ${PROJECT_NAME}_cdcs_postgres
+    restart: always
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASS}
+      - POSTGRES_DB=${POSTGRES_DB}
+  curator_redis:
+    image: redis:${REDIS_VERSION}
+    container_name: ${PROJECT_NAME}_cdcs_redis
+    command: redis-server --requirepass ${REDIS_PASS}
+    restart: always
+    volumes:
+      - redis_data:/data
+  cdcs:
+    image: ${PROJECT_NAME}:${PROJECT_VERSION}
+    container_name: ${PROJECT_NAME}_cdcs
+    restart: always
+    depends_on:
+      - curator_mongo
+      - curator_redis
+      - curator_postgres
+    volumes:
+      - cdcs_socket:/tmp/curator/
+      - cdcs_static:/srv/curator/static.prod
+      - ./cdcs/${PROJECT_NAME}.settings.py:/srv/curator/${PROJECT_NAME}/settings.py
+    environment:
+      - DJANGO_SETTINGS_MODULE=${PROJECT_NAME}.settings
+      - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
+      - SERVER_URI=${SERVER_URI}
+      - MONGO_HOST=${PROJECT_NAME}_cdcs_mongo
+      - POSTGRES_HOST=${PROJECT_NAME}_cdcs_postgres
+      - REDIS_HOST=${PROJECT_NAME}_cdcs_redis
+      - MONGO_DB=${MONGO_DB}
+      - MONGO_USER=${MONGO_USER}
+      - MONGO_PASS=${MONGO_PASS}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASS=${POSTGRES_PASS}
+      - REDIS_PASS=${REDIS_PASS}
+      - MONITORING_SERVER_URI=${MONITORING_SERVER_URI:-}
+      - SERVER_NAME=${SERVER_NAME:-}
+    command:
+      - ${PROJECT_NAME}
+      - ${PROJECT_NAME}_cdcs_postgres
+      - ${POSTGRES_DB}
+      - ${POSTGRES_USER}
+      - ${POSTGRES_PASS}
+
+volumes:
+  mongo_data:
+  postgres_data:
+  redis_data:
+  cdcs_socket:
+  cdcs_static:

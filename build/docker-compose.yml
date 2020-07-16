@@ -1,0 +1,12 @@
+version: "3"
+services:
+  cdcs:
+    image: ${PROJECT_NAME}:${PROJECT_VERSION}
+    build:
+      context: ./cdcs
+      args:
+      - CDCS_REPO=${CDCS_REPO}
+      - BRANCH=${BRANCH}
+      - CDCS_PROJECT=${PROJECT_NAME}
+      - PIP_CONF=${PIP_CONF}
+      - PYTHON_VERSION=${PYTHON_VERSION}

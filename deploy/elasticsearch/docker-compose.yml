@@ -1,0 +1,17 @@
+version: "3"
+services:
+  curator_elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:${ELASTIC_VERSION}
+    container_name: ${PROJECT_NAME}_cdcs_elasticsearch
+    environment:
+      - node.name=${PROJECT_NAME}_cdcs_elasticsearch
+      - discovery.seed_hosts=${PROJECT_NAME}_cdcs_elasticsearch
+      - cluster.initial_master_nodes=${PROJECT_NAME}_cdcs_elasticsearch
+      - cluster.name=docker-cluster
+      - network.host=0.0.0.0
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
