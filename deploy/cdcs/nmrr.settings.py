@@ -484,7 +484,7 @@ AUTO_SET_PID = True
 ID_PROVIDER_SYSTEMS = {
     "local": {
         "class": "core_linked_records_app.utils.providers.local.LocalIdProvider",
-        "args": [SERVER_URI],
+        "args": [],
     },
 }
 """ dict: provider systems available for registering PIDs
