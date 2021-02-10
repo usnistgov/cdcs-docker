@@ -22,8 +22,9 @@ Below is the list of environment variables to set and their description.
 
 | Variable | Description |
 | ----------- | ----------- |
-| PROJECT_NAME          | Name of the CDCS image to build (e.g. mdcs, nmrr) |
-| PROJECT_VERSION       | Name of the tag to build (e.g. latest, 2.10.0) |
+| PROJECT_NAME          | Name of the CDCS/Django project to build (e.g. mdcs, nmrr) |
+| IMAGE_NAME            | Name of the image to build (e.g. mdcs, nmrr) |
+| IMAGE_VERSION         | Version of the image to build (e.g. latest, 2.10.0) |
 | CDCS_REPO             | URL of the CDCS repository to clone to build the image (e.g. https://github.com/usnistgov/mdcs.git) |
 | BRANCH                | Branch/Tag of the repository to pull to build the image (e.g. master, 2.10.0) |
 | PIP_CONF              | Pip configuration file to use to build the image |
@@ -48,25 +49,31 @@ Update the values in the `.env` file:
 $ cd deploy
 $ vim .env
 ```
-Below is the list of environment variables to set and their description.
-Commented variables in the `.env` need to be uncommented and filled.
+Below is the list of environment variables that can be set and their
+description. Commented variables in the `.env` need to be uncommented
+and filled.
 
 | Variable | Description |
 | ----------- | ----------- |
-| PROJECT_NAME          | Name of the CDCS image to deploy (e.g. mdcs, nmrr) |
-| PROJECT_VERSION       | Version of the CDCS image to deploy (e.g. latest, 2.10.0) |
+| PROJECT_NAME          | Name of the CDCS/Django project to deploy (e.g. mdcs, nmrr) |
+| IMAGE_NAME            | Name of the CDCS image to deploy (e.g. mdcs, nmrr) |
+| IMAGE_VERSION         | Version of the CDCS image to deploy (e.g. latest, 2.10.0) |
 | HOSTNAME              | Hostname of the server (e.g. for local deployment, use the machine's IP address xxx.xxx.xxx.xxx) |
 | SERVER_URI            | URI of server (e.g. for local deployment, http://xxx.xxx.xxx.xxx) |
 | SERVER_NAME           | Name of the server (e.g. MDCS) |
+| SETTINGS              | Settings file to use during deployment ([more info in the Settings section](#settings))|
 | SERVER_CONF           | Mount appropriate nginx file (e.g. default for http, https otherwise. The protocol of the `SERVER_URI` should be updated accordingly) |
+| MONGO_PORT            | MongoDB Port (default: 27017) |
 | MONGO_ADMIN_USER      | Admin user for MongoDB (should be different from `MONGO_USER`) |
 | MONGO_ADMIN_PASS      | Admin password for MongoDB |
 | MONGO_USER            | User for MongoDB (should be different from `MONGO_ADMIN_USER`) |
 | MONGO_PASS            | User password for MongoDB |
 | MONGO_DB              | Name of the Mongo database (e.g. cdcs) |
+| POSTGRES_PORT         | Postgres Port (default: 5432) |
 | POSTGRES_USER         | User for Postgres |
 | POSTGRES_PASS         | User password for Postgres |
 | POSTGRES_DB           | Name of the Postgres database (e.g. cdcs) |
+| REDIS_PORT            | Redis Port (default: 6379) |
 | REDIS_PASS            | Password for Redis |
 | DJANGO_SECRET_KEY     | [Secret Key](https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/#secret-key) for Django (should be a "large random value") |
 | NGINX_PORT_80         | Expose port 80 on host machine for NGINX |
@@ -77,12 +84,56 @@ Commented variables in the `.env` need to be uncommented and filled.
 | NGINX_VERSION         | Version of the NGINX image |
 | MONITORING_SERVER_URI | (optional) URI of an APM server for monitoring |
 
+A few additional environment variables are provided to the CDCS
+container. The variables below are computed based on the values of
+other variables. If changed, some portions of the `docker-compose.yml`
+might need to be updated to stay consistent.
+
+| Variable | Description |
+| ----------- | ----------- |
+| DJANGO_SETTINGS_MODULE  | [`DJANGO_SETTINGS_MODULE`](https://docs.djangoproject.com/en/2.2/topics/settings/#envvar-DJANGO_SETTINGS_MODULE) (set using the values of `PROJECT_NAME` and `SETTINGS`)  |
+| MONGO_HOST | Mongodb hostname (set to `${PROJECT_NAME}_cdcs_mongo`) |
+| POSTGRES_HOST | Postgres hostname (set to `${PROJECT_NAME}_cdcs_postgres`) |
+| REDIS_HOST | REDIS hostname (set to `${PROJECT_NAME}_cdcs_redis`) |
+
 #### Settings
 
-The deployment can be further customized by editing the `settings.py` file located under `deploy/cdcs`.
-The files are currently filled with default values for a deployment of an MDCS or an NMRR system.
-It is recommended to customize the file before deploying.
+Starting from MDCS/NMRR 2.14, repositories of these two projects will
+have settings ready for deployment (not production).
 
+The deployment can be further customized by mounting additional settings
+to the deployed containers:
+- **Option 1:** Use settings from the image. This option is recommended
+if the settings in your image are already well formatted for deployment.
+    - Update the `docker-compose.yml` file and comment the line that
+    mounts the settings:
+    ```
+    # - ./cdcs/${SETTINGS}.py:/srv/curator/${PROJECT_NAME}/${SETTINGS}.py
+    ```
+    - set the `SETTINGS` variable to `settings`.
+- **Option 2**: Use default settings from the CDCS image and customize
+them. Custom settings can be used to provide CI or production
+configurations. For example:
+    - Create a `custom_settings.py` file (see `ci_settings.py` or
+     `test_settings.py` as examples),
+    - set the `SETTINGS` variable to `custom_settings`.
+- **Option 3**: Override settings from the image. This will
+ignore settings already present in the CDCS image. This option is
+recommended for MDCS/NMRR 2.14 and below.
+    - Update the `docker-compose.yml` file and change the line that
+    mounts the settings to:
+    ```
+    - ./cdcs/${PROJECT_NAME}.settings.py:/srv/curator/${PROJECT_NAME}/settings.py
+    ```
+    - set the `SETTINGS` variable to `settings`.
+
+The [`DJANGO_SETTINGS_MODULE`](https://docs.djangoproject.com/en/2.2/topics/settings/#envvar-DJANGO_SETTINGS_MODULE)
+environment variable can be set to select which settings to use. By
+default the `docker-compose` file sets it using the values of
+`PROJECT_NAME` and `SETTINGS` variables.
+
+For more information about production deployment of a Django project,
+please check the [Deployment Checklist](https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/#deployment-checklist)
 
 ## 2. Deploy the stack
 

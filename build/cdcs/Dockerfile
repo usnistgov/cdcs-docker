@@ -4,7 +4,7 @@ LABEL maintainer="National Institute of Standards and Technology"
 
 ARG CDCS_REPO
 ARG BRANCH
-ARG CDCS_PROJECT
+ARG PROJECT_NAME
 ARG PIP_CONF
 
 # Directory in container for project source files
