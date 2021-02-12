@@ -21,7 +21,7 @@ DEBUG = False
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ["DJANGO_SECRET_KEY"]
 # SECURITY WARNING: only list host/domain names that this Django site can serve
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = os.environ["ALLOWED_HOSTS"].split(",") if "ALLOWED_HOSTS" in os.environ else []
 # SERVER URI
 SERVER_URI = os.environ["SERVER_URI"]
 

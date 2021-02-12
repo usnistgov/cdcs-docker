@@ -2,9 +2,6 @@
 """
 from .settings import *
 
-ALLOWED_HOSTS = ["*"]
-
-
 MONITORING_SERVER_URI = os.environ["MONITORING_SERVER_URI"] if "MONITORING_SERVER_URI" in os.environ else None
 if MONITORING_SERVER_URI:
     ELASTIC_APM = {

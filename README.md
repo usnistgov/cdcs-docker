@@ -60,6 +60,7 @@ and filled.
 | IMAGE_VERSION         | Version of the CDCS image to deploy (e.g. latest, 2.10.0) |
 | HOSTNAME              | Hostname of the server (e.g. for local deployment, use the machine's IP address xxx.xxx.xxx.xxx) |
 | SERVER_URI            | URI of server (e.g. for local deployment, http://xxx.xxx.xxx.xxx) |
+| ALLOWED_HOSTS         | Comma-separated list of hosts (e.g. ALLOWED_HOSTS=127.0.0.1,localhost), see [Allowed Hosts](https://docs.djangoproject.com/en/2.2/ref/settings/#allowed-hosts) |
 | SERVER_NAME           | Name of the server (e.g. MDCS) |
 | SETTINGS              | Settings file to use during deployment ([more info in the Settings section](#settings))|
 | SERVER_CONF           | Mount appropriate nginx file (e.g. default for http, https otherwise. The protocol of the `SERVER_URI` should be updated accordingly) |
@@ -166,7 +167,7 @@ Please read important deployment information in the troubleshoot section below.
 
 ## Local deployment
 
-**DO NOT** set `HOSTNAME` and `SERVER_URI` to localhost or 127.0.0.1.
+**DO NOT** set `HOSTNAME`, `SERVER_URI` and `ALLOWED_HOSTS` to localhost or 127.0.0.1.
 Even if the system, starts properly, some features may not work
 (e.g. the search page may show an error instead of returning data).
 When deploying locally, use the computer's IP address to set those two
@@ -183,6 +184,12 @@ Then update the `.env` file:
 ```
 HOSTNAME=xxx.xxx.xxx.xxx
 SERVER_URI=http://xxx.xxx.xxx.xxx
+ALLOWED_HOSTS=xxx.xxx.xxx.xxx
+```
+
+**NOTE:** For testing purposes, `ALLOWED_HOSTS` can be set to `*`:
+```
+ALLOWED_HOSTS=*
 ```
 
 ## Production deployment
