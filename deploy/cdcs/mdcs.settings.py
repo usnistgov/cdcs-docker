@@ -21,9 +21,46 @@ DEBUG = False
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ["DJANGO_SECRET_KEY"]
 # SECURITY WARNING: only list host/domain names that this Django site can serve
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = os.environ["ALLOWED_HOSTS"].split(",") if "ALLOWED_HOSTS" in os.environ else []
 # SERVER URI
 SERVER_URI = os.environ["SERVER_URI"]
+
+# Databases
+
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
+        "HOST": os.environ["POSTGRES_HOST"] if "POSTGRES_HOST" in os.environ else None,
+        "PORT": int(os.environ["POSTGRES_PORT"]) if "POSTGRES_PORT" in os.environ else 5432,
+        "NAME": os.environ["POSTGRES_DB"] if "POSTGRES_DB" in os.environ else None,
+        "USER": os.environ["POSTGRES_USER"] if "POSTGRES_USER" in os.environ else None,
+        "PASSWORD": os.environ["POSTGRES_PASS"] if "POSTGRES_PASS" in os.environ else None,
+    }
+}
+
+MONGO_HOST = os.environ["MONGO_HOST"] if "MONGO_HOST" in os.environ else ""
+MONGO_PORT = os.environ["MONGO_PORT"] if "MONGO_PORT" in os.environ else "27017"
+MONGO_DB = os.environ["MONGO_DB"] if "MONGO_DB" in os.environ else ""
+MONGO_USER = os.environ["MONGO_USER"] if "MONGO_USER" in os.environ else ""
+MONGO_PASS = os.environ["MONGO_PASS"] if "MONGO_PASS" in os.environ else ""
+MONGODB_URI = (
+    f"mongodb://{MONGO_USER}:{MONGO_PASS}@{MONGO_HOST}:{MONGO_PORT}/{MONGO_DB}"
+)
+connect(MONGO_DB, host=MONGODB_URI)
+
+
+BROKER_TRANSPORT_OPTIONS = {
+    "visibility_timeout": 3600,
+    "fanout_prefix": True,
+    "fanout_patterns": True,
+}
+REDIS_HOST = os.environ["REDIS_HOST"] if "REDIS_HOST" in os.environ else ""
+REDIS_PORT = os.environ["REDIS_PORT"] if "REDIS_PORT" in os.environ else "6379"
+REDIS_PASS = os.environ["REDIS_PASS"] if "REDIS_PASS" in os.environ else None
+REDIS_URL = f"redis://:{REDIS_PASS}@{REDIS_HOST}:{REDIS_PORT}"
+
+BROKER_URL = REDIS_URL
+CELERY_RESULT_BACKEND = REDIS_URL
 
 # Label customization
 WEBSITE_SHORT_TITLE = "MDCS"
@@ -35,11 +72,6 @@ CURATE_MENU_NAME = "Data Curation"
 WEBSITE_ADMIN_COLOR = "yellow"
 # black, black-light, blue, blue-light, green, green-light, purple, purple-light, red, red-light, yellow, yellow-light
 
-SERVER_EMAIL = ""
-EMAIL_SUBJECT_PREFIX = ""
-USE_EMAIL = False
-ADMINS = [("admin", "admin@example.com")]
-MANAGERS = [("manager", "moderator@example.com")]
 
 if SERVER_URI.lower().startswith("https"):
     # Activate HTTPS
@@ -142,29 +174,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "mdcs.wsgi.application"
-
-# Database
-# https://docs.djangoproject.com/en/2.2/ref/settings/#databases
-
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "HOST": os.environ["POSTGRES_HOST"],
-        "PORT": 5432,
-        "NAME": os.environ["POSTGRES_DB"],
-        "USER": os.environ["POSTGRES_USER"],
-        "PASSWORD": os.environ["POSTGRES_PASS"],
-    }
-}
-
-MONGO_HOST = os.environ["MONGO_HOST"]
-MONGO_NAME = os.environ["MONGO_DB"]
-MONGO_USER = os.environ["MONGO_USER"]
-MONGO_PASS = os.environ["MONGO_PASS"]
-MONGODB_URI = (
-    "mongodb://" + MONGO_USER + ":" + MONGO_PASS + "@" + MONGO_HOST + "/" + MONGO_NAME
-)
-connect(MONGO_NAME, host=MONGODB_URI)
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
@@ -318,18 +327,6 @@ if LOGGING_DB:
         LOGGER_DB_LEVEL,
         ["console", "logfile-django-db-backend"],
     )
-
-USE_BACKGROUND_TASK = False
-REDIS_HOST = os.environ["REDIS_HOST"]
-REDIS_PASS = os.environ["REDIS_PASS"]
-REDIS_URL = "redis://:" + REDIS_PASS + "@" + REDIS_HOST + ":6379"
-BROKER_URL = REDIS_URL  # 'redis://localhost:6379/0'
-BROKER_TRANSPORT_OPTIONS = {
-    "visibility_timeout": 3600,
-    "fanout_prefix": True,
-    "fanout_patterns": True,
-}
-CELERY_RESULT_BACKEND = REDIS_URL
 
 # Password settings for django.contrib.auth validators
 # Specifies the minimum length for passwords.
@@ -499,30 +496,3 @@ default prefix)
 PID_XPATH = "root.pid"
 """ string: location of the PID in the document, specified as dot notation
 """
-
-MONITORING_SERVER_URI = os.environ["MONITORING_SERVER_URI"]
-if MONITORING_SERVER_URI:
-    ELASTIC_APM = {
-        "SERVICE_NAME": os.environ["SERVER_NAME"],
-        "SERVER_URL": MONITORING_SERVER_URI,
-        # Use if APM Server requires a token
-        # 'SECRET_TOKEN': '',
-    }
-    if "elasticapm.contrib.django" not in INSTALLED_APPS:
-        INSTALLED_APPS = INSTALLED_APPS + ("elasticapm.contrib.django",)
-    if "elasticapm.contrib.django.middleware.TracingMiddleware" not in MIDDLEWARE:
-        # Make sure that it is the first middleware in the list.
-        MIDDLEWARE = (
-            "elasticapm.contrib.django.middleware.TracingMiddleware",
-        ) + MIDDLEWARE
-    if "elasticapm.errors" not in LOGGING["loggers"]:
-        # https://www.elastic.co/guide/en/apm/agent/python/current/django-support.html#django-logging
-        # Log errors from the Elastic APM module to the console (recommended)
-        set_generic_logger(LOGGING, "elasticapm.errors", "ERROR", ["console"])
-    if (
-        "elasticapm.contrib.django.context_processors.rum_tracing"
-        not in TEMPLATES[0]["OPTIONS"]["context_processors"]
-    ):
-        TEMPLATES[0]["OPTIONS"]["context_processors"].append(
-            "elasticapm.contrib.django.context_processors.rum_tracing"
-        )

@@ -48,7 +48,7 @@ services:
     volumes:
       - redis_data:/data
   cdcs:
-    image: ${PROJECT_NAME}:${PROJECT_VERSION}
+    image: ${IMAGE_NAME}:${IMAGE_VERSION}
     container_name: ${PROJECT_NAME}_cdcs
     restart: always
     depends_on:
@@ -58,29 +58,29 @@ services:
     volumes:
       - cdcs_socket:/tmp/curator/
       - cdcs_static:/srv/curator/static.prod
-      - ./cdcs/${PROJECT_NAME}.settings.py:/srv/curator/${PROJECT_NAME}/settings.py
+      - ./cdcs/${SETTINGS}.py:/srv/curator/${PROJECT_NAME}/${SETTINGS}.py
     environment:
-      - DJANGO_SETTINGS_MODULE=${PROJECT_NAME}.settings
+      - DJANGO_SETTINGS_MODULE=${PROJECT_NAME}.${SETTINGS}
       - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
       - SERVER_URI=${SERVER_URI}
+      - ALLOWED_HOSTS=${ALLOWED_HOSTS}
+      - SERVER_NAME=${SERVER_NAME:-}
       - MONGO_HOST=${PROJECT_NAME}_cdcs_mongo
-      - POSTGRES_HOST=${PROJECT_NAME}_cdcs_postgres
-      - REDIS_HOST=${PROJECT_NAME}_cdcs_redis
+      - MONGO_PORT=${MONGO_PORT:-27017}
       - MONGO_DB=${MONGO_DB}
       - MONGO_USER=${MONGO_USER}
       - MONGO_PASS=${MONGO_PASS}
+      - POSTGRES_HOST=${PROJECT_NAME}_cdcs_postgres
+      - POSTGRES_PORT=${POSTGRES_PORT:-5432}
       - POSTGRES_DB=${POSTGRES_DB}
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASS=${POSTGRES_PASS}
+      - REDIS_HOST=${PROJECT_NAME}_cdcs_redis
+      - REDIS_PORT=${REDIS_PORT:-6379}
       - REDIS_PASS=${REDIS_PASS}
       - MONITORING_SERVER_URI=${MONITORING_SERVER_URI:-}
-      - SERVER_NAME=${SERVER_NAME:-}
     command:
       - ${PROJECT_NAME}
-      - ${PROJECT_NAME}_cdcs_postgres
-      - ${POSTGRES_DB}
-      - ${POSTGRES_USER}
-      - ${POSTGRES_PASS}
 
 volumes:
   mongo_data:
