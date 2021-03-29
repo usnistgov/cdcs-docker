@@ -15,7 +15,7 @@ services:
       - cdcs_socket:/tmp/curator/
       - cdcs_static:/srv/curator_static
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-      - ./nginx/${SERVER_CONF}.conf:/etc/nginx/conf.d/default.conf
+      - ./nginx/${SERVER_CONF}.conf:/etc/nginx/templates/default.conf.template
   curator_mongo:
     image: mongo:${MONGO_VERSION}
     container_name: ${PROJECT_NAME}_cdcs_mongo
