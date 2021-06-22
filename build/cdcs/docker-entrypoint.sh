@@ -28,7 +28,7 @@ uwsgi --chdir /srv/curator/ \
       --socket /tmp/curator/curator.sock \
       --wsgi-file /srv/curator/$PROJECT_NAME/wsgi.py \
       --chmod-socket=666 \
-      --processes=10 \
+      --processes=$UWSGI_PROCESSES \
       --enable-threads \
       --lazy-apps
 echo "UWSGI started"

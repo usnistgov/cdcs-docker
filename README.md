@@ -83,6 +83,7 @@ and filled.
 | REDIS_VERSION         | Version of the Redis image |
 | POSTGRES_VERSION      | Version of the Postgres image |
 | NGINX_VERSION         | Version of the NGINX image |
+| UWSGI_PROCESSES       | Number of uwsgi processes to start (default 10) |
 | MONITORING_SERVER_URI | (optional) URI of an APM server for monitoring |
 
 A few additional environment variables are provided to the CDCS
