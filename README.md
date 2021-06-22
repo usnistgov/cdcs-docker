@@ -97,6 +97,91 @@ might need to be updated to stay consistent.
 | POSTGRES_HOST | Postgres hostname (set to `${PROJECT_NAME}_cdcs_postgres`) |
 | REDIS_HOST | REDIS hostname (set to `${PROJECT_NAME}_cdcs_redis`) |
 
+
+#### SAML2
+
+Configure SAML2 authentication by providing values for the following environment variables in the `saml2/.env` file.
+See `saml2/.env.example` for an example of SAML2 configuration with a Keycloak server.
+
+| Variable | Description |
+| ----------- | ----------- |
+| ENABLE_SAML2_SSO_AUTH | Enable SAML2 authentication (e.g. `ENABLE_SAML2_SSO_AUTH=True`)|
+| SAML_ATTRIBUTE_MAP_DIR | Points to a directory which has the attribute maps in Python modules (see [attribute_map_dir](https://pysaml2.readthedocs.io/en/latest/howto/config.html#attribute-map-dir) |
+| SAML_ATTRIBUTES_MAP_UID | SAML attribute mapping to uid |
+| SAML_ATTRIBUTES_MAP_EMAIL| SAML attribute mapping to email |
+| SAML_ATTRIBUTES_MAP_CN | SAML attribute mapping to common name |
+| SAML_ATTRIBUTES_MAP_SN | SAML attribute mapping to surname |
+| SAML_DJANGO_USER_MAIN_ATTRIBUTE | Django field to use to find user and create session (see [user attributes and account linking](https://djangosaml2.readthedocs.io/contents/setup.html#users-attributes-and-account-linking))|
+| SAML_USE_NAME_ID_AS_USERNAME | Use SAML2 name id as username (see [user attributes and account linking](https://djangosaml2.readthedocs.io/contents/setup.html#users-attributes-and-account-linking))|
+| SAML_CREATE_UNKNOWN_USER | Create user if not found in Django database (see [user attributes and account linking](https://djangosaml2.readthedocs.io/contents/setup.html#users-attributes-and-account-linking))|
+| SAML_KEY_FILE | Path to private key (see [key_file](https://pysaml2.readthedocs.io/en/latest/howto/config.html#key-file)) |
+| SAML_CERT_FILE | Path to the public key (see [cert_file](https://pysaml2.readthedocs.io/en/latest/howto/config.html#cert-file)) |
+| SAML_METADATA_REMOTE_URL | Url to remote SAML metadata file (see [metadata](https://pysaml2.readthedocs.io/en/latest/howto/config.html#metadata))|
+| SAML_XMLSEC_BIN_PATH | Full path to xmlsec1 binary program (see [xmlsec_binary](https://pysaml2.readthedocs.io/en/latest/howto/config.html#xmlsec-binary)) |
+| SAML_WANT_RESPONSE_SIGNED | Set to `True` if responses must be signed (see [want_response_signed](https://pysaml2.readthedocs.io/en/latest/howto/config.html#want-response-signed) |
+| SAML_WANT_ASSERTIONS_SIGNED | Set to `True` if assertions must be signed  (see [want_assertions_signed](https://pysaml2.readthedocs.io/en/latest/howto/config.html#want-assertions-signed)  |
+| SAML_LOGOUT_REQUESTS_SIGNED | Set to `True` if logout requests must be signed  (see [logout_requests_signed](https://pysaml2.readthedocs.io/en/latest/howto/config.html#logout-requests-signed) |
+| CONTACT_PERSON_N | Contact information for person N (see [contact_person](https://pysaml2.readthedocs.io/en/latest/howto/config.html#contact-person) )  |
+| ORGANIZATION_NAME_N | Organization name N (see [organization](https://pysaml2.readthedocs.io/en/latest/howto/config.html#organization))|
+| ORGANIZATION_DISPLAY_NAME_N | Organization display name N (see [organization](https://pysaml2.readthedocs.io/en/latest/howto/config.html#organization))|
+| ORGANIZATION_URL_N | Organization url N (see [organization](https://pysaml2.readthedocs.io/en/latest/howto/config.html#organization))|
+
+##### Contact Person and Organization environment variables
+
+Environment variables ending with suffix `_N` are expecting `N` to be a sequence of integers starting at `1`.
+For example, if two contact persons need to be added to the SAML configuration, the following variables should be set:
+```
+CONTACT_PERSON_1=
+CONTACT_PERSON_2=
+```
+
+1. Contact Person
+
+A contact person environment variable is expecting a comma separated list of values in the following order:
+- given name,
+- surname,
+- company,
+- email address,
+- type (technical, support, administrative, billing or other).
+
+For example:
+```
+CONTACT_PERSON_1=Firstname1,Lastname1,Example Co.,contact1@example.com,technical
+```
+
+2. Organization
+
+Each section of the SAML organization configuration is stored in a separate environment variable. Each variable is expecting a comma separated pair
+composed of:
+- label,
+- language code.
+
+Below is an example from the Pysaml2 documentation and how to represent it in the CDCS using environment variables.
+
+Example from the [documentation](https://pysaml2.readthedocs.io/en/latest/howto/config.html#organization):
+```
+"organization": {
+    "name": [
+        ("Example Company", "en"),
+        ("Exempel AB", "se")
+    ],
+    "display_name": ["Exempel AB"],
+    "url": [
+        ("http://example.com", "en"),
+        ("http://exempel.se", "se"),
+    ],
+}
+```
+
+Equivalent CDCS configuration using environment variables:
+```
+ORGANIZATION_NAME_1=Example Company,en
+ORGANIZATION_NAME_2=Exempel AB,se
+ORGANIZATION_DISPLAY_NAME_1=Exempel AB,se
+ORGANIZATION_URL_1=http://example.com,en
+ORGANIZATION_URL_2=http://exemple.se,se
+```
+
 #### Settings
 
 Starting from MDCS/NMRR 2.14, repositories of these two projects will
