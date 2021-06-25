@@ -82,6 +82,8 @@ services:
       - MONITORING_SERVER_URI=${MONITORING_SERVER_URI:-}
       - ELASTICSEARCH_HOST=${ELASTICSEARCH_HOST:-}
       - ELASTICSEARCH_PORT=${ELASTICSEARCH_PORT:-}
+    env_file:
+      - ./saml2/.env
     command:
       - ${PROJECT_NAME}
 
