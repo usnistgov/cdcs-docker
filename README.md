@@ -107,22 +107,32 @@ See `saml2/.env.example` for an example of SAML2 configuration with a Keycloak s
 | Variable | Description |
 | ----------- | ----------- |
 | ENABLE_SAML2_SSO_AUTH | Enable SAML2 authentication (e.g. `ENABLE_SAML2_SSO_AUTH=True`)|
-| SAML_ATTRIBUTE_MAP_DIR | Points to a directory which has the attribute maps in Python modules (see [attribute_map_dir](https://pysaml2.readthedocs.io/en/latest/howto/config.html#attribute-map-dir) |
+| SAML_ATTRIBUTE_MAP_DIR | Points to a directory which has the attribute maps in Python modules (see [attribute_map_dir](https://pysaml2.readthedocs.io/en/latest/howto/config.html#attribute-map-dir))|
+| SAML_ATTRIBUTES_MAP_IDENTIFIER | SAML attribute map supported name-format (see [attribute_map_dir](https://pysaml2.readthedocs.io/en/latest/howto/config.html#attribute-map-dir)) |
 | SAML_ATTRIBUTES_MAP_UID | SAML attribute mapping to uid |
+| SAML_ATTRIBUTES_MAP_UID_FIELD | SAML attribute mapping uid field name |
 | SAML_ATTRIBUTES_MAP_EMAIL| SAML attribute mapping to email |
+| SAML_ATTRIBUTES_MAP_EMAIL_FIELD| SAML attribute mapping email field name |
 | SAML_ATTRIBUTES_MAP_CN | SAML attribute mapping to common name |
+| SAML_ATTRIBUTES_MAP_CN_FIELD | SAML attribute mapping common name field name |
 | SAML_ATTRIBUTES_MAP_SN | SAML attribute mapping to surname |
+| SAML_ATTRIBUTES_MAP_SN_FIELD | SAML attribute mapping surname field name |
 | SAML_DJANGO_USER_MAIN_ATTRIBUTE | Django field to use to find user and create session (see [user attributes and account linking](https://djangosaml2.readthedocs.io/contents/setup.html#users-attributes-and-account-linking))|
 | SAML_USE_NAME_ID_AS_USERNAME | Use SAML2 name id as username (see [user attributes and account linking](https://djangosaml2.readthedocs.io/contents/setup.html#users-attributes-and-account-linking))|
 | SAML_CREATE_UNKNOWN_USER | Create user if not found in Django database (see [user attributes and account linking](https://djangosaml2.readthedocs.io/contents/setup.html#users-attributes-and-account-linking))|
 | SAML_KEY_FILE | Path to private key (see [key_file](https://pysaml2.readthedocs.io/en/latest/howto/config.html#key-file)) |
 | SAML_CERT_FILE | Path to the public key (see [cert_file](https://pysaml2.readthedocs.io/en/latest/howto/config.html#cert-file)) |
 | SAML_METADATA_REMOTE_URL | Url to remote SAML metadata file (see [metadata](https://pysaml2.readthedocs.io/en/latest/howto/config.html#metadata))|
+| SAML_METADATA_REMOTE_CERT | (Optional) Certificate for the remote (see [metadata](https://pysaml2.readthedocs.io/en/latest/howto/config.html#metadata))|
+| SAML_METADATA_LOCAL | Path to local SAML metadata file (see [metadata](https://pysaml2.readthedocs.io/en/latest/howto/config.html#metadata))|
 | SAML_XMLSEC_BIN_PATH | Full path to xmlsec1 binary program (see [xmlsec_binary](https://pysaml2.readthedocs.io/en/latest/howto/config.html#xmlsec-binary)) |
-| SAML_WANT_RESPONSE_SIGNED | Set to `True` if responses must be signed (see [want_response_signed](https://pysaml2.readthedocs.io/en/latest/howto/config.html#want-response-signed) |
-| SAML_WANT_ASSERTIONS_SIGNED | Set to `True` if assertions must be signed  (see [want_assertions_signed](https://pysaml2.readthedocs.io/en/latest/howto/config.html#want-assertions-signed)  |
-| SAML_LOGOUT_REQUESTS_SIGNED | Set to `True` if logout requests must be signed  (see [logout_requests_signed](https://pysaml2.readthedocs.io/en/latest/howto/config.html#logout-requests-signed) |
-| CONTACT_PERSON_N | Contact information for person N (see [contact_person](https://pysaml2.readthedocs.io/en/latest/howto/config.html#contact-person) )  |
+| SAML_WANT_RESPONSE_SIGNED | Set to `True` if responses must be signed (see [want_response_signed](https://pysaml2.readthedocs.io/en/latest/howto/config.html#want-response-signed))|
+| SAML_WANT_ASSERTIONS_SIGNED | Set to `True` if assertions must be signed  (see [want_assertions_signed](https://pysaml2.readthedocs.io/en/latest/howto/config.html#want-assertions-signed)) |
+| SAML_LOGOUT_REQUESTS_SIGNED | Set to `True` if logout requests must be signed  (see [logout_requests_signed](https://pysaml2.readthedocs.io/en/latest/howto/config.html#logout-requests-signed)) |
+| SAML_LOGOUT_RESPONSES_SIGNED | Set to `True` if logout responses must be signed  (see [logout_responses_signed](https://pysaml2.readthedocs.io/en/latest/howto/config.html#logout-responses-signed)) |
+| SAML_SIGNING_ALGORITHM | Signing algorithm  (see [signing_algorithm](https://pysaml2.readthedocs.io/en/latest/howto/config.html#signing-algorithm)) |
+| SAML_DIGEST_ALGORITHM | Digest algorithm  (see [digest_algorithm](https://pysaml2.readthedocs.io/en/latest/howto/config.html#digest-algorithm))|
+| CONTACT_PERSON_N | Contact information for person N (see [contact_person](https://pysaml2.readthedocs.io/en/latest/howto/config.html#contact-person))  |
 | ORGANIZATION_NAME_N | Organization name N (see [organization](https://pysaml2.readthedocs.io/en/latest/howto/config.html#organization))|
 | ORGANIZATION_DISPLAY_NAME_N | Organization display name N (see [organization](https://pysaml2.readthedocs.io/en/latest/howto/config.html#organization))|
 | ORGANIZATION_URL_N | Organization url N (see [organization](https://pysaml2.readthedocs.io/en/latest/howto/config.html#organization))|
