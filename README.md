@@ -346,7 +346,7 @@ Add and fill the following environment variables:
 
 | Variable | Description |
 | ----------- | ----------- |
-| ELASTIC_VERSION          | Version of the Elasticsearch image (e.g. 7.0.1) |
+| ELASTIC_VERSION          | Version of the Elasticsearch image (e.g. 7.14.1) |
 
 On linux, you will need to increase the available [virtual memory](https://www.elastic.co/guide/en/elasticsearch/reference/7.x/vm-max-map-count.html).
 
