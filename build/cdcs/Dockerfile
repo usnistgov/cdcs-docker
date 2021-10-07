@@ -14,11 +14,9 @@ ENV DOCKYARD_SRVPROJ="/srv/curator"
 RUN apt-get update && apt-get install -y \
     netcat vim python curl git dnsutils gettext \
     libxml2-dev libxslt-dev python-dev lib32z1-dev libssl-dev \
-    postgresql-client xmlsec1
+    python3-pip libpq-dev postgresql-client xmlsec1
 
 # Setup pip
-RUN curl "https://bootstrap.pypa.io/get-pip.py" -o "get-pip.py" \
-    && python get-pip.py
 RUN mkdir -p /root/.config/pip
 COPY pip/$PIP_CONF/pip.conf /root/.config/pip
 
