@@ -79,12 +79,10 @@ services:
       - REDIS_PORT=${REDIS_PORT:-6379}
       - REDIS_PASS=${REDIS_PASS}
       - UWSGI_PROCESSES=${UWSGI_PROCESSES:-10}
-      - MONITORING_SERVER_URI=${MONITORING_SERVER_URI:-}
-      - ELASTICSEARCH_HOST=${ELASTICSEARCH_HOST:-}
-      - ELASTICSEARCH_PORT=${ELASTICSEARCH_PORT:-}
     env_file:
       - ./saml2/.env
       - ./handle/.env
+      - ./extra/.env
     command:
       - ${PROJECT_NAME}
 
