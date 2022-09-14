@@ -34,6 +34,7 @@ RUN pip install -r requirements.txt
 RUN pip install -r requirements.core.txt
 
 # Get entrypoint ready for the image
+COPY ./create_folders.py /
 COPY ./docker-entrypoint.sh /
 RUN chmod +x /docker-entrypoint.sh
 
