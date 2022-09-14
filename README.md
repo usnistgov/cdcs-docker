@@ -368,6 +368,18 @@ Additional components can be added to the CDCS stack by providing `docker-compos
 Update the `COMPOSE_FILE` variable in the `.env` file to do so. More information can be found in on this option in the
 [documentation](https://docs.docker.com/compose/reference/envvars/#compose_file).
 
+### MongoDB
+
+In preparation for the release of CDCS 3.x, MongoDB becomes an optional component and 
+will not be part of the default stack. It will need to be added for any CDCS 2.x deployment.
+
+To add MongoDB to the CDCS stack, you can do the following:
+
+Update the `.env` file to deploy MongoDB:
+```
+COMPOSE_FILE=docker-compose.yml:mongo/docker-compose.yml
+```
+
 ### Elasticsearch
 
 Ongoing developments on the CDCS make use of Elasticsearch.
