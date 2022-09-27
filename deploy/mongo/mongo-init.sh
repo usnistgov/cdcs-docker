@@ -8,4 +8,4 @@ echo '
             roles: [ "readWrite" ]
         }
     )
-    exit' | mongosh
+    exit' | mongo
