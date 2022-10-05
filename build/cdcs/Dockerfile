@@ -32,6 +32,7 @@ RUN cd $DOCKYARD_SRVPROJ \
 WORKDIR $DOCKYARD_SRVPROJ
 RUN pip install -r requirements.txt
 RUN pip install -r requirements.core.txt
+RUN pip install "importlib-metadata<5.0.0"
 
 # Get entrypoint ready for the image
 COPY ./create_folders.py /
