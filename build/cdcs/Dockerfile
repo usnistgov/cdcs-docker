@@ -21,7 +21,7 @@ RUN mkdir -p /root/.config/pip
 COPY pip/$PIP_CONF/pip.conf /root/.config/pip
 
 # Install uwsgi
-RUN pip install uwsgi psycopg2==2.8.6
+RUN pip install uwsgi psycopg2
 
 # Clone git repo
 RUN git clone $CDCS_REPO $DOCKYARD_SRVPROJ
