@@ -12,8 +12,6 @@ echo "********* Migrate auth... *********"
 /srv/curator/manage.py migrate auth
 echo "********* Migrate apps... *********"
 /srv/curator/manage.py migrate
-echo "********* Create folders... *********"
-/srv/curator/manage.py shell -c "$(cat /create_folders.py)"
 echo "********* Collect static files... *********"
 /srv/curator/manage.py collectstatic --noinput
 echo "********* Compile messages... *********"

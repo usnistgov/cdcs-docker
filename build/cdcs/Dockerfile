@@ -35,7 +35,6 @@ RUN pip install -r requirements.core.txt
 RUN pip install "importlib-metadata<5.0.0"
 
 # Get entrypoint ready for the image
-COPY ./create_folders.py /
 COPY ./docker-entrypoint.sh /
 RUN chmod +x /docker-entrypoint.sh
 
@@ -43,6 +42,8 @@ RUN chmod +x /docker-entrypoint.sh
 RUN mkdir /tmp/curator
 # Create folder for static files
 RUN mkdir $DOCKYARD_SRVPROJ/static.prod
+# Create folder for media files
+RUN mkdir $DOCKYARD_SRVPROJ/media
 
 # Create unprivileged user
 RUN groupadd cdcs && \
