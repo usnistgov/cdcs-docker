@@ -41,6 +41,7 @@ services:
       - curator_redis
       - curator_postgres
     volumes:
+      - cdcs_media:/srv/curator/media
       - cdcs_socket:/tmp/curator/
       - cdcs_static:/srv/curator/static.prod
       - ./cdcs/${SETTINGS}.py:/srv/curator/${PROJECT_NAME}/${SETTINGS}.py
@@ -74,5 +75,6 @@ services:
 volumes:
   postgres_data:
   redis_data:
+  cdcs_media:
   cdcs_socket:
   cdcs_static:
