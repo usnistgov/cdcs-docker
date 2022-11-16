@@ -13,7 +13,7 @@ services:
     volumes:
       - mongo_data:/data/db/
       - ./mongo/mongo-init.sh:/docker-entrypoint-initdb.d/mongo-init.sh:ro
-    command: "--auth"
+    command: "--auth --noscripting"
 
 volumes:
   mongo_data:
