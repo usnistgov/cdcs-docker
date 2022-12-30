@@ -63,7 +63,7 @@ and filled.
 | ALLOWED_HOSTS         | Comma-separated list of hosts (e.g. ALLOWED_HOSTS=127.0.0.1,localhost), see [Allowed Hosts](https://docs.djangoproject.com/en/2.2/ref/settings/#allowed-hosts) |
 | SERVER_NAME           | Name of the server (e.g. MDCS) |
 | SETTINGS              | Settings file to use during deployment ([more info in the Settings section](#settings))|
-| SERVER_CONF           | Mount appropriate nginx file (e.g. default for http, https otherwise. The protocol of the `SERVER_URI` should be updated accordingly) |
+| SERVER_CONF           | Mount appropriate nginx file (e.g. `default` for http deployment using a uwsgi UNIX socket, `https` to enable SSL, or `gunicorn_http[s]`. The protocol of the `SERVER_URI` should be updated accordingly) |
 | MONGO_PORT            | MongoDB Port (default: 27017) |
 | MONGO_ADMIN_USER      | Admin user for MongoDB (should be different from `MONGO_USER`) |
 | MONGO_ADMIN_PASS      | Admin password for MongoDB |
@@ -83,7 +83,8 @@ and filled.
 | REDIS_VERSION         | Version of the Redis image |
 | POSTGRES_VERSION      | Version of the Postgres image |
 | NGINX_VERSION         | Version of the NGINX image |
-| UWSGI_PROCESSES       | Number of uwsgi processes to start (default 10) |
+| PROCESSES             | Number of uwsgi processes (default 8) / gunicorn workers to start (default `cpu_count() * 2 + 1)` |
+| THREADS               | Number of uwsgi/gunicorn threads (default 8)|
 | MONITORING_SERVER_URI | (optional) URI of an APM server for monitoring |
 
 A few additional environment variables are provided to the CDCS

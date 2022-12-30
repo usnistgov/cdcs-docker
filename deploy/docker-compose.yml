@@ -64,11 +64,12 @@ services:
       - REDIS_HOST=${PROJECT_NAME}_cdcs_redis
       - REDIS_PORT=${REDIS_PORT:-6379}
       - REDIS_PASS=${REDIS_PASS}
-      - UWSGI_PROCESSES=${UWSGI_PROCESSES:-10}
     env_file:
       - ./saml2/.env
       - ./handle/.env
       - ./extra/.env
+#    entrypoint:
+#      - "/docker-entrypoint-gunicorn.sh"
     command:
       - ${PROJECT_NAME}
 

@@ -20,8 +20,8 @@ RUN apt-get update && apt-get install -y \
 RUN mkdir -p /root/.config/pip
 COPY pip/$PIP_CONF/pip.conf /root/.config/pip
 
-# Install uwsgi
-RUN pip install uwsgi psycopg2
+# Install additional python packages
+RUN pip install psycopg2 uwsgi gunicorn[gthread]
 
 # Clone git repo
 RUN git clone $CDCS_REPO $DOCKYARD_SRVPROJ
@@ -35,8 +35,9 @@ RUN pip install -r requirements.core.txt
 RUN pip install "importlib-metadata<5.0.0"
 
 # Get entrypoint ready for the image
-COPY ./docker-entrypoint.sh /
-RUN chmod +x /docker-entrypoint.sh
+COPY ./gunicorn.conf.py /etc
+COPY ./docker-entrypoint*.sh /
+RUN chmod +x /docker-entrypoint*.sh
 
 # Create folder for uwsgi socket
 RUN mkdir /tmp/curator
