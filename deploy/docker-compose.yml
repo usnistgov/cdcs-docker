@@ -69,7 +69,7 @@ services:
       - ./handle/.env
       - ./extra/.env
 #    entrypoint:
-#      - "/docker-entrypoint-gunicorn.sh"
+#      - /docker-entrypoint-gunicorn.sh
     command:
       - ${PROJECT_NAME}
 
