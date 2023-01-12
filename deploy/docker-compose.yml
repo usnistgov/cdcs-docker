@@ -68,10 +68,9 @@ services:
       - ./saml2/.env
       - ./handle/.env
       - ./extra/.env
-#    entrypoint:
-#      - /docker-entrypoint-gunicorn.sh
     command:
       - ${PROJECT_NAME}
+      - ${WEB_SERVER:-uwsgi}
 
 volumes:
   postgres_data:

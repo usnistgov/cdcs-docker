@@ -83,7 +83,8 @@ and filled.
 | REDIS_VERSION         | Version of the Redis image |
 | POSTGRES_VERSION      | Version of the Postgres image |
 | NGINX_VERSION         | Version of the NGINX image |
-| PROCESSES             | Number of uwsgi processes (default 8) / gunicorn workers to start (default `cpu_count() * 2 + 1)` |
+| WEB_SERVER            | Web server for the CDCS (e.g. `uwsgi`, `gunicorn`)
+| PROCESSES             | Number of uwsgi processes (default `--processes=8`) / gunicorn workers to start (default `workers=cpu_count() * 2 + 1)` |
 | THREADS               | Number of uwsgi/gunicorn threads (default 8)|
 | MONITORING_SERVER_URI | (optional) URI of an APM server for monitoring |
 
@@ -258,6 +259,21 @@ default the `docker-compose` file sets it using the values of
 
 For more information about production deployment of a Django project,
 please check the [Deployment Checklist](https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/#deployment-checklist)
+
+#### Web Server
+
+The following web servers are available for the CDCS: Uwsgi and Gunicorn. 
+
+The CDCS image contains a default configurations for each:
+- The default Uwsgi configuration writes in a UNIX socket, that Nginx reads from.
+A socket file is mounted in both containers (`cdcs_socket`). 
+- Gunicorn on the other hand, communicates with Nginx via a port (8000).
+
+You can switch from one web server to the other by setting `WEB_SERVER` in the `.env` 
+file to either `uwsgi` or `gunicorn`.
+The Nginx configuration is a little different depending on the web server, so `SERVER_CONF` needs to be updated accordingly:
+use `default` (HTTP deployment with Uwsgi) or `https` (HTTPS deployment with Uwsgi) for Uwsgi, and `gunicorn_http` or `gunicorn_https` for Gunicorn.
+
 
 ## 2. Deploy the stack
 

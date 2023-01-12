@@ -1,6 +1,5 @@
 #!/bin/bash
-
-. /docker-entrypoint-common.sh $1
+PROJECT_NAME=$1
 
 echo "********* Starting Gunicorn... *********"
 gunicorn --config=/etc/gunicorn.conf.py $PROJECT_NAME.wsgi:application

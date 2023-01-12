@@ -55,4 +55,4 @@ USER cdcs
 
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
-CMD ["curator"]
+CMD ["curator", "uwsgi"]
