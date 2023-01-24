@@ -84,7 +84,7 @@ and filled.
 | POSTGRES_VERSION      | Version of the Postgres image |
 | NGINX_VERSION         | Version of the NGINX image |
 | WEB_SERVER            | Web server for the CDCS (e.g. `uwsgi`, `gunicorn`)
-| PROCESSES             | Number of uwsgi processes (default `--processes=8`) / gunicorn workers to start (default `workers=cpu_count() * 2 + 1)` |
+| PROCESSES             | Number of uwsgi processes (default `--processes=8`) / gunicorn workers to start (default `workers=cpu_count() * 2 + 1`) |
 | THREADS               | Number of uwsgi/gunicorn threads (default 8)|
 | MONITORING_SERVER_URI | (optional) URI of an APM server for monitoring |
 
