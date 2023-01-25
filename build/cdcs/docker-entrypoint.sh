@@ -1,6 +1,7 @@
 #!/bin/bash
 
 PROJECT_NAME=$1
+WEB_SERVER=$2
 
 # Wait for Postgres: https://docs.docker.com/compose/startup-order/
 echo "********* Wait for Postgres... *********"
@@ -25,14 +26,4 @@ echo "********* Starting Celery worker... *********"
 celery -A $PROJECT_NAME worker -E -l info &
 celery -A $PROJECT_NAME beat -l info &
 
-echo "********* Starting UWSGI... *********"
-uwsgi --chdir /srv/curator/ \
-      --uid cdcs \
-      --gid cdcs \
-      --socket /tmp/curator/curator.sock \
-      --wsgi-file /srv/curator/$PROJECT_NAME/wsgi.py \
-      --chmod-socket=666 \
-      --processes=$UWSGI_PROCESSES \
-      --enable-threads \
-      --lazy-apps
-echo "UWSGI started"
+/docker-entrypoint-$WEB_SERVER.sh $PROJECT_NAME

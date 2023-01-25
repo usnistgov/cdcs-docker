@@ -63,7 +63,7 @@ and filled.
 | ALLOWED_HOSTS         | Comma-separated list of hosts (e.g. ALLOWED_HOSTS=127.0.0.1,localhost), see [Allowed Hosts](https://docs.djangoproject.com/en/2.2/ref/settings/#allowed-hosts) |
 | SERVER_NAME           | Name of the server (e.g. MDCS) |
 | SETTINGS              | Settings file to use during deployment ([more info in the Settings section](#settings))|
-| SERVER_CONF           | Mount appropriate nginx file (e.g. default for http, https otherwise. The protocol of the `SERVER_URI` should be updated accordingly) |
+| SERVER_CONF           | Mount appropriate nginx file (e.g. `default` for http deployment using a uWSGI UNIX socket, `https` to enable SSL, or `gunicorn_http[s]`. The protocol of the `SERVER_URI` should be updated accordingly) |
 | MONGO_PORT            | MongoDB Port (default: 27017) |
 | MONGO_ADMIN_USER      | Admin user for MongoDB (should be different from `MONGO_USER`) |
 | MONGO_ADMIN_PASS      | Admin password for MongoDB |
@@ -83,7 +83,9 @@ and filled.
 | REDIS_VERSION         | Version of the Redis image |
 | POSTGRES_VERSION      | Version of the Postgres image |
 | NGINX_VERSION         | Version of the NGINX image |
-| UWSGI_PROCESSES       | Number of uwsgi processes to start (default 10) |
+| WEB_SERVER            | Web server for the CDCS (e.g. `uwsgi`, `gunicorn`)
+| PROCESSES             | Number of uWSGI processes (default `--processes=8`) / Gunicorn workers to start (default `workers=cpu_count() * 2 + 1`) |
+| THREADS               | Number of uWSGI/Gunicorn threads per process/worker (default 8)|
 | MONITORING_SERVER_URI | (optional) URI of an APM server for monitoring |
 
 A few additional environment variables are provided to the CDCS
@@ -258,13 +260,29 @@ default the `docker-compose` file sets it using the values of
 For more information about production deployment of a Django project,
 please check the [Deployment Checklist](https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/#deployment-checklist)
 
+#### Web Server
+
+The following web servers are available for the CDCS: uWSGI and Gunicorn. 
+
+The CDCS image contains a default configurations for each:
+- The default uWSGI configuration writes in a UNIX socket, that Nginx reads from.
+A socket file is mounted in both containers (`cdcs_socket`). 
+- Gunicorn on the other hand, communicates with Nginx via a port (8000).
+
+You can switch from one web server to the other by setting `WEB_SERVER` in the `.env` 
+file to either `uwsgi` or `gunicorn`.
+The Nginx configuration is a little different depending on the web server, so `SERVER_CONF` needs to be updated accordingly:
+use `default` (HTTP deployment with uWSGI) or `https` (HTTPS deployment with uWSGI) for uWSGI, and `gunicorn_http` or `gunicorn_https` for Gunicorn.
+
+
 ## 2. Deploy the stack
 
 ``` bash
 $ docker-compose up -d
 ```
 
-(Optional) For testing purposes, using the HTTPS protocol, you can then run the following script to generate and copy self signed certificates to the container.
+(Optional) For testing purposes, using the HTTPS protocol, you can then run the following script to generate and copy 
+self-signed certificates to the container.
 ``` bash
 $ ./docker_set_ssl.sh
 ```
