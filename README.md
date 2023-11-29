@@ -60,7 +60,7 @@ and filled.
 | IMAGE_VERSION         | Version of the CDCS image to deploy (e.g. latest, 2.10.0) |
 | HOSTNAME              | Hostname of the server (e.g. for local deployment, use the machine's IP address xxx.xxx.xxx.xxx) |
 | SERVER_URI            | URI of server (e.g. for local deployment, http://xxx.xxx.xxx.xxx) |
-| ALLOWED_HOSTS         | Comma-separated list of hosts (e.g. ALLOWED_HOSTS=127.0.0.1,localhost), see [Allowed Hosts](https://docs.djangoproject.com/en/2.2/ref/settings/#allowed-hosts) |
+| ALLOWED_HOSTS         | Comma-separated list of hosts (e.g. ALLOWED_HOSTS=127.0.0.1,localhost), see [Allowed Hosts](https://docs.djangoproject.com/en/4.2/ref/settings/#allowed-hosts) |
 | SERVER_NAME           | Name of the server (e.g. MDCS) |
 | SETTINGS              | Settings file to use during deployment ([more info in the Settings section](#settings))|
 | SERVER_CONF           | Mount appropriate nginx file (e.g. `default` for http deployment using a uWSGI UNIX socket, `https` to enable SSL, or `gunicorn_http[s]`. The protocol of the `SERVER_URI` should be updated accordingly) |
@@ -76,7 +76,7 @@ and filled.
 | POSTGRES_DB           | Name of the Postgres database (e.g. cdcs) |
 | REDIS_PORT            | Redis Port (default: 6379) |
 | REDIS_PASS            | Password for Redis |
-| DJANGO_SECRET_KEY     | [Secret Key](https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/#secret-key) for Django (should be a "large random value") |
+| DJANGO_SECRET_KEY     | [Secret Key](https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/#secret-key) for Django (should be a "large random value") |
 | NGINX_PORT_80         | Expose port 80 on host machine for NGINX |
 | NGINX_PORT_443        | Expose port 443 on host machine for NGINX |
 | MONGO_VERSION         | Version of the MongoDB image |
@@ -95,7 +95,7 @@ might need to be updated to stay consistent.
 
 | Variable | Description |
 | ----------- | ----------- |
-| DJANGO_SETTINGS_MODULE  | [`DJANGO_SETTINGS_MODULE`](https://docs.djangoproject.com/en/2.2/topics/settings/#envvar-DJANGO_SETTINGS_MODULE) (set using the values of `PROJECT_NAME` and `SETTINGS`)  |
+| DJANGO_SETTINGS_MODULE  | [`DJANGO_SETTINGS_MODULE`](https://docs.djangoproject.com/en/4.2/topics/settings/#envvar-DJANGO_SETTINGS_MODULE) (set using the values of `PROJECT_NAME` and `SETTINGS`)  |
 | MONGO_HOST | Mongodb hostname (set to `${PROJECT_NAME}_cdcs_mongo`) |
 | POSTGRES_HOST | Postgres hostname (set to `${PROJECT_NAME}_cdcs_postgres`) |
 | REDIS_HOST | REDIS hostname (set to `${PROJECT_NAME}_cdcs_redis`) |
@@ -252,13 +252,13 @@ recommended for MDCS/NMRR 2.14 and below.
     ```
     - set the `SETTINGS` variable to `settings`.
 
-The [`DJANGO_SETTINGS_MODULE`](https://docs.djangoproject.com/en/2.2/topics/settings/#envvar-DJANGO_SETTINGS_MODULE)
+The [`DJANGO_SETTINGS_MODULE`](https://docs.djangoproject.com/en/4.2/topics/settings/#envvar-DJANGO_SETTINGS_MODULE)
 environment variable can be set to select which settings to use. By
 default the `docker-compose` file sets it using the values of
 `PROJECT_NAME` and `SETTINGS` variables.
 
 For more information about production deployment of a Django project,
-please check the [Deployment Checklist](https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/#deployment-checklist)
+please check the [Deployment Checklist](https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/#deployment-checklist)
 
 #### Web Server
 
@@ -337,7 +337,7 @@ ALLOWED_HOSTS=*
 - Set `SERVER_CONF` to `https`
 - Update the file `nginx/https.conf` if necessary
 - Add HTTPS configuration to the mounted `settings.py` file
-- Have a look at the [deployment checklist](https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/#deployment-checklist)
+- Have a look at the [deployment checklist](https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/#deployment-checklist)
 
 ## Logs
 
