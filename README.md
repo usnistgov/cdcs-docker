@@ -13,9 +13,9 @@ Install [Docker](https://docs.docker.com/engine/install/#server) first, then ins
 
 Update the values in the `.env` file:
 
-``` bash
-$ cd build
-$ vim .env
+```shell
+cd build
+vim .env
 ```
 
 Below is the list of environment variables to set and their description.
@@ -33,8 +33,8 @@ Below is the list of environment variables to set and their description.
 
 ### 2. Build the image
 
-``` bash
-$ docker-compose build --no-cache
+```shell
+docker-compose build --no-cache
 ```
 
 
@@ -45,9 +45,9 @@ $ docker-compose build --no-cache
 
 Update the values in the `.env` file:
 
-``` bash
-$ cd deploy
-$ vim .env
+```shell
+cd deploy
+vim .env
 ```
 Below is the list of environment variables that can be set and their
 description. Commented variables in the `.env` need to be uncommented
@@ -277,14 +277,14 @@ use `default` (HTTP deployment with uWSGI) or `https` (HTTPS deployment with uWS
 
 ## 2. Deploy the stack
 
-``` bash
-$ docker-compose up -d
+```shell
+docker-compose up -d
 ```
 
 (Optional) For testing purposes, using the HTTPS protocol, you can then run the following script to generate and copy 
 self-signed certificates to the container.
-``` bash
-$ ./docker_set_ssl.sh
+```shell
+./docker_set_ssl.sh
 ```
 
 ## 3. Create a superuser
@@ -293,8 +293,8 @@ The superuser is the first user that will be added to the CDCS. This is the
 main administrator on the platform. Once it has been created, more users
 can be added using the web interface. Wait for the CDCS server to start, then run:
 
-```bash
-$ ./docker_createsuperuser ${username} ${password} ${email}
+```shell
+./docker_createsuperuser ${username} ${password} ${email}
 ```
 
 ## 4. Access
@@ -343,12 +343,12 @@ ALLOWED_HOSTS=*
 
 Make sure every component is running properly by checking the logs.
 For example, to check the logs of an MDCS instance (`PROJECT_NAME=mdcs`), use the following commands:
-```
-$ docker logs -f mdcs_cdcs
-$ docker logs -f mdcs_cdcs_nginx
-$ docker logs -f mdcs_cdcs_mongo
-$ docker logs -f mdcs_cdcs_postgres
-$ docker logs -f mdcs_cdcs_redis
+```shell
+docker logs -f mdcs_cdcs
+docker logs -f mdcs_cdcs_nginx
+docker logs -f mdcs_cdcs_mongo
+docker logs -f mdcs_cdcs_postgres
+docker logs -f mdcs_cdcs_redis
 ```
 
 ## MongoDB RAM usage
@@ -420,9 +420,40 @@ On linux, you will need to increase the available [virtual memory](https://www.e
 
 To delete the containers and **all the data** stored in the deployed CDCS system, run:
 
+```shell
+docker-compose down -v
 ```
-$ docker-compose down -v
+
+## Upgrade the CDCS container
+
+When a new version of a CDCS image becomes available, the system can be upgraded by doing the following steps:
+
+1. Stop the stack
+
+```shell
+docker-compose stop
 ```
+
+2. Update the version of the image in `deploy/.env`:
+
+```shell
+IMAGE_VERSION=3.6.0 # set the version of the new image
+```
+
+3. Restart the stack with the new image:
+
+```shell
+docker-compose up -d
+```
+
+4. Run the migration script (that will update static files and apply database migrations):
+
+```shell
+./docker_migrate.sh
+```
+
+**NOTE**: the script will do dry runs and ask for confirmation before applying the changes, but it is  
+recommended to create a back up of the databases before starting the migration.
 
 # Disclaimer
 
