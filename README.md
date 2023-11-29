@@ -418,7 +418,13 @@ On linux, you will need to increase the available [virtual memory](https://www.e
 
 ## Delete the containers and their data
 
-To delete the containers and **all the data** stored in the deployed CDCS system, run:
+To delete all the containers of the CDCS stack, run:
+
+```shell
+docker-compose down
+```
+
+To delete all containers and **all the data**, run:
 
 ```shell
 docker-compose down -v
