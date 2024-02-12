@@ -37,6 +37,8 @@ RUN pip install -r requirements.core.txt
 COPY ./gunicorn.conf.py /etc
 COPY ./docker-entrypoint*.sh /
 RUN chmod +x /docker-entrypoint*.sh
+COPY ./scripts /scripts
+RUN chmod +x /scripts/*
 
 # Create folder for uwsgi socket
 RUN mkdir /tmp/curator

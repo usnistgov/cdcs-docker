@@ -398,6 +398,34 @@ Update the `.env` file to deploy MongoDB:
 COMPOSE_FILE=docker-compose.yml:mongo/docker-compose.yml
 ```
 
+### Celery
+
+By default, CDCS images have been running the django web server but also celery worker and celery beat.
+It is now also possible to change this default behavior and run these services 
+separately by selecting one of the following entrypoint:
+- `docker-entrypoint.sh`: starts the django server, celery worker and celery beat (default)
+- `docker-entrypoint-django.sh`: starts the django server only
+- `docker-entrypoint-celery-worker.sh`: starts the celery worker only
+- `docker-entrypoint-celery-beat.sh`: starts the celery beat only
+
+The default behavior will continue to run these 3 services within the same container.
+To deploy the 3 services separately in a docker-compose deployment, you can do the following:
+
+1) Update the file `docker-compose.yml` and set the default entrypoint of the cdcs service to 
+only start the django server:
+
+```yaml
+cdcs:
+  entrypoint: /docker-entrypoint-django.sh
+```
+
+2) Then add celery worker and celery beat services to the CDCS stack, by updating the 
+`COMPOSE_FILE` variable from the `.env` file:
+
+```
+COMPOSE_FILE=docker-compose.yml:celery/docker-compose.yml
+```
+
 ### Elasticsearch
 
 Ongoing developments on the CDCS make use of Elasticsearch.
