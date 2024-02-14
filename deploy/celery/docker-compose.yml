@@ -32,6 +32,8 @@ services:
     entrypoint: /docker-entrypoint-celery-beat.sh
     command:
       - ${PROJECT_NAME}
+    env_file:
+      - ./extra/.env
 
   celery_worker:
     image: ${IMAGE_NAME}:${IMAGE_VERSION}
@@ -65,3 +67,5 @@ services:
     entrypoint: /docker-entrypoint-celery-worker.sh
     command:
       - ${PROJECT_NAME}
+    env_file:
+      - ./extra/.env
