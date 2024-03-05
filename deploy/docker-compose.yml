@@ -44,7 +44,8 @@ services:
       - cdcs_media:/srv/curator/media
       - cdcs_socket:/tmp/curator/
       - cdcs_static:/srv/curator/static.prod
-      - ./cdcs/${SETTINGS}.py:/srv/curator/${PROJECT_NAME}/${SETTINGS}.py
+      # Uncomment to mount additional settings file
+#      - ./cdcs/${SETTINGS}.py:/srv/curator/${PROJECT_NAME}/${SETTINGS}.py
     environment:
       - DJANGO_SETTINGS_MODULE=${PROJECT_NAME}.${SETTINGS}
       - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}

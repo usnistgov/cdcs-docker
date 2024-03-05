@@ -37,7 +37,37 @@ Below is the list of environment variables to set and their description.
 docker-compose build --no-cache
 ```
 
+### 3. Build a custom image (optional)
 
+Different images may be needed for different deployment contexts 
+(development/CI/production, docker-compose/K8s, ...).
+
+The `custom` build configuration allows adding the following elements
+to an existing CDCS image, by editing the following files:
+- `packages.txt`: install additional linux packages (see [example_packages.txt](build/custom/examples/example_packages.txt)),
+- `requirements.txt`: install additional python packages (see [example_requirements.txt](build/custom/examples/example_requirements.txt)),
+- `settings.py`: add settings to settings.py file (see [example_settings.py](build/custom/examples/example_settings.py)).
+
+To configure the image to build, edit the following variables in the `.env` file.
+
+| Variable | Description                                              |
+| ----------- |----------------------------------------------------------|
+| BASE_IMAGE_NAME       | Name of the base image (e.g. mdcs, nmrr)          |
+| BASE_IMAGE_VERSION    | Version of the base image (e.g. latest, 2.10.0)   |
+| PROJECT_NAME          | Name of the CDCS/Django project to build (e.g. mdcs, nmrr) |
+| IMAGE_VERSION         | Version of the image to build (e.g. latest, 2.10.0)      |
+| IMAGE_VERSION         | Version of the image to build (e.g. latest, 2.10.0)      |
+
+Then build the custom image.
+
+```commandline
+cd build/custom
+vim .env
+vim packages.txt
+vim requirements.txt
+vim settings.py
+docker-compose build --no-cache
+``` 
 
 ## Deploy a CDCS
 
