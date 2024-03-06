@@ -8,8 +8,9 @@ services:
       - curator_redis
       - curator_postgres
       - cdcs
-    volumes:
-      - ./cdcs/${SETTINGS}.py:/srv/curator/${PROJECT_NAME}/${SETTINGS}.py
+    # Uncomment to mount additional settings file
+#    volumes:
+#      - ./cdcs/${SETTINGS}.py:/srv/curator/${PROJECT_NAME}/${SETTINGS}.py
     environment:
       - DJANGO_SETTINGS_MODULE=${PROJECT_NAME}.${SETTINGS}
       - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
@@ -43,8 +44,9 @@ services:
       - curator_redis
       - curator_postgres
       - cdcs
-    volumes:
-      - ./cdcs/${SETTINGS}.py:/srv/curator/${PROJECT_NAME}/${SETTINGS}.py
+    # Uncomment to mount additional settings file
+#    volumes:
+#      - ./cdcs/${SETTINGS}.py:/srv/curator/${PROJECT_NAME}/${SETTINGS}.py
     environment:
       - DJANGO_SETTINGS_MODULE=${PROJECT_NAME}.${SETTINGS}
       - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
