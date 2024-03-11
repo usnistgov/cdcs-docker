@@ -9,3 +9,8 @@ if [ $tables_found -eq 0 ]; then
     echo "********* Migrate apps... *********"
     /srv/curator/manage.py migrate
 fi
+
+echo "********* Collect static files... *********"
+/srv/curator/manage.py collectstatic --noinput
+echo "********* Compile messages... *********"
+/srv/curator/manage.py compilemessages
