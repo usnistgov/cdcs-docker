@@ -428,7 +428,7 @@ Update the `.env` file to deploy MongoDB:
 COMPOSE_FILE=docker-compose.yml:mongo/docker-compose.yml
 ```
 
-### Celery
+### :construction: Celery (WIP)
 
 By default, CDCS images have been running the django web server but also celery worker and celery beat.
 It is now also possible to change this default behavior and run these services 
@@ -455,6 +455,13 @@ cdcs:
 ```
 COMPOSE_FILE=docker-compose.yml:celery/docker-compose.yml
 ```
+
+> :warning: **Concurrency Issue:** Some CDCS applications make database modifications during their initialization.
+> Starting Django and Celery services in parallel can make these scripts run multiple times, 
+> causing inconsistencies in the database. The issue needs to be resolved in the code of the
+> CDCS apps. In the meantime, a startup delay has been implemented for celery services.
+
+> :page_facing_up: The default entrypoint runs the scripts synchronously and does not have this issue.
 
 ### Elasticsearch
 

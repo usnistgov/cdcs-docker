@@ -3,8 +3,8 @@
 PROJECT_NAME=$1
 WEB_SERVER=$2
 
-echo "********* Initializing Postgres database... *********"
-/scripts/init-psql.sh
+echo "********* Initialization... *********"
+/scripts/init.sh
 
 echo "********* Starting Celery... *********"
 /scripts/start-celery-worker.sh $PROJECT_NAME &
