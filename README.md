@@ -327,7 +327,24 @@ can be added using the web interface. Wait for the CDCS server to start, then ru
 ./docker_createsuperuser ${username} ${password} ${email}
 ```
 
-## 4. Access
+## 4. Initialize database
+
+From CDCS 2.9, to prevent concurrency issues and avoid database operations running multiple times,
+some database initialization commands have been added. These commands need to be run once, 
+after the initial deployment of the application.  
+
+- To load **modules**, run the following command:
+```commandline
+./docker_loadmodules.sh
+```
+**NOTE**: If modules are added/removed from the project's `INSTALLED_APPS`, the commands needs to be run again.
+
+- To load **exporters**, run the following command:
+```commandline
+./docker_loadexporters.sh
+```
+
+## 5. Access
 
 The CDCS is now available at the `SERVER_URI` set at deployment.
 Please read important deployment information in the troubleshoot section below.
@@ -456,7 +473,7 @@ cdcs:
 COMPOSE_FILE=docker-compose.yml:celery/docker-compose.yml
 ```
 
-> :warning: **Concurrency Issue:** Some CDCS applications make database modifications during their initialization.
+> :warning: **Concurrency Issue in CDCS < 2.9:** Some CDCS applications make database modifications during their initialization.
 > Starting Django and Celery services in parallel can make these scripts run multiple times, 
 > causing inconsistencies in the database. The issue needs to be resolved in the code of the
 > CDCS apps. In the meantime, a startup delay has been implemented for celery services.
