@@ -329,17 +329,17 @@ can be added using the web interface. Wait for the CDCS server to start, then ru
 
 ## 4. Initialize database
 
-From CDCS 2.9, to prevent concurrency issues and avoid database operations running multiple times,
+From CDCS 2.9, to prevent concurrency issues and avoid running database operations multiple times,
 some database initialization commands have been added. These commands need to be run once, 
 after the initial deployment of the application.  
 
-- To load **modules**, run the following command:
+- To load the **modules**, run the following command:
 ```commandline
 ./docker_loadmodules.sh
 ```
 **NOTE**: If modules are added/removed from the project's `INSTALLED_APPS`, the commands needs to be run again.
 
-- To load **exporters**, run the following command:
+- To load the **exporters**, run the following command:
 ```commandline
 ./docker_loadexporters.sh
 ```
@@ -350,7 +350,7 @@ The CDCS is now available at the `SERVER_URI` set at deployment.
 Please read important deployment information in the troubleshoot section below.
 
 
-## 5. Troubleshoot
+## 6. Troubleshoot
 
 ## Local deployment
 
