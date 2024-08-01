@@ -50,13 +50,13 @@ to an existing CDCS image, by editing the following files:
 
 To configure the image to build, edit the following variables in the `.env` file.
 
-| Variable | Description                                              |
-| ----------- |----------------------------------------------------------|
-| BASE_IMAGE_NAME       | Name of the base image (e.g. mdcs, nmrr)          |
-| BASE_IMAGE_VERSION    | Version of the base image (e.g. latest, 2.10.0)   |
-| PROJECT_NAME          | Name of the CDCS/Django project to build (e.g. mdcs, nmrr) |
-| IMAGE_VERSION         | Version of the image to build (e.g. latest, 2.10.0)      |
-| IMAGE_VERSION         | Version of the image to build (e.g. latest, 2.10.0)      |
+| Variable              | Description                                                   |
+|-----------------------|---------------------------------------------------------------|
+| BASE_IMAGE_NAME       | Name of the base image (e.g. mdcs, nmrr)                      |
+| BASE_IMAGE_VERSION    | Version of the base image (e.g. latest, 2.10.0)               |
+| PROJECT_NAME          | Name of the CDCS/Django project to build (e.g. mdcs, nmrr)    |
+| IMAGE_NAME            | Name of the image to build (e.g. mdcs)                        |
+| IMAGE_VERSION         | Version of the image to build (e.g. latest, 2.10.0)           |
 
 Then build the custom image.
 
@@ -324,7 +324,8 @@ main administrator on the platform. Once it has been created, more users
 can be added using the web interface. Wait for the CDCS server to start, then run:
 
 ```shell
-./docker_createsuperuser ${username} ${password} ${email}
+cdcs-docker/deploy/mongo$ chmod a+r mongo-init.sh
+cdcs-docker/deploy$ ./docker_createsuperuser.sh ${username} ${password} ${email}
 ```
 
 ## 4. Initialize database
@@ -334,13 +335,13 @@ some database initialization commands have been added. These commands need to be
 after the initial deployment of the application.  
 
 - To load the **modules**, run the following command:
-```commandline
+```shell
 ./docker_loadmodules.sh
 ```
 **NOTE**: If modules are added/removed from the project's `INSTALLED_APPS`, the commands needs to be run again.
 
 - To load the **exporters**, run the following command:
-```commandline
+```shell
 ./docker_loadexporters.sh
 ```
 
