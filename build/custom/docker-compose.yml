@@ -5,6 +5,6 @@ services:
     build:
       context: .
       args:
-      - BASE_IMAGE_NAME=${BASE_IMAGE_NAME}
-      - BASE_IMAGE_VERSION=${BASE_IMAGE_VERSION}
-      - PROJECT_NAME=${PROJECT_NAME}
+        - BASE_IMAGE_NAME=${BASE_IMAGE_NAME}
+        - BASE_IMAGE_VERSION=${BASE_IMAGE_VERSION}
+        - PROJECT_NAME=${PROJECT_NAME}
