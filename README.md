@@ -34,7 +34,7 @@ Below is the list of environment variables to set and their description.
 ### 2. Build the image
 
 ```shell
-docker-compose build --no-cache
+cdcs-docker/build$ docker-compose build --no-cache
 ```
 
 ### 3. Build a custom image (optional)
@@ -50,13 +50,13 @@ to an existing CDCS image, by editing the following files:
 
 To configure the image to build, edit the following variables in the `.env` file.
 
-| Variable | Description                                              |
-| ----------- |----------------------------------------------------------|
-| BASE_IMAGE_NAME       | Name of the base image (e.g. mdcs, nmrr)          |
-| BASE_IMAGE_VERSION    | Version of the base image (e.g. latest, 2.10.0)   |
-| PROJECT_NAME          | Name of the CDCS/Django project to build (e.g. mdcs, nmrr) |
-| IMAGE_VERSION         | Version of the image to build (e.g. latest, 2.10.0)      |
-| IMAGE_VERSION         | Version of the image to build (e.g. latest, 2.10.0)      |
+| Variable              | Description                                                   |
+|-----------------------|---------------------------------------------------------------|
+| BASE_IMAGE_NAME       | Name of the base image (e.g. mdcs, nmrr)                      |
+| BASE_IMAGE_VERSION    | Version of the base image (e.g. latest, 2.10.0)               |
+| PROJECT_NAME          | Name of the CDCS/Django project to build (e.g. mdcs, nmrr)    |
+| IMAGE_NAME            | Name of the image to build (e.g. mdcs)                        |
+| IMAGE_VERSION         | Version of the image to build (e.g. latest, 2.10.0)           |
 
 Then build the custom image.
 
@@ -240,7 +240,7 @@ time to configure effectively. Please see the file
 | `ID_PROVIDER_PREFIXES`               | Prefixes to use when creating handles for data and blobs in CDCS. Comma-separated values.                                                                                                                                                                                                                                             |
 | `HANDLE_NET_USER`                    | Handle server authentication for a user that has admin rights to list and create handles on the provided prefix. The value provided here will be encoded as "300:{HANDLE_NET_PREFIX}/{HANDLE_NET_USER}" when it is sent to the handle server, so this value should be just the suffix of the admin handle                             |
 | `HANDLE_NET_SECRET_KEY`              | The "secret key" for the admin user specified above. This should be provided as plain text and not encoded in any way. This value corresponds to the secret key that would be used if you were creating a handle via batch file                                                                                                       |
-| `PID_XPATH`                          | The location in the default schema in which to store and search for PID values. Should be provided in "dot" notation, with attributes indicated using the "@" character. For example, if your PIDs are stored in an attribute named "pid" on the root element named "Resource", the PID_XPATH value should be "Resource.@pid"         |
+| `PID_PATH`                          | The location in the default schema in which to store and search for PID values. Should be provided in "dot" notation, with attributes indicated using the "@" character. For example, if your PIDs are stored in an attribute named "pid" on the root element named "Resource", the PID_PATH value should be "Resource.@pid"         |
 | `AUTO_SET_PID`                       | Whether to auto-create PIDs for records that are curated or uploaded without them. Should likely be True if you're using PIDs at all                                                                                                                                                                                                  |
 | `HANDLE_NET_RECORD_INDEX`            | Starting index for records when minting handles                                                                                                                                                                                                                                                                                       |
 |                                      | _The following are admin settings for the handle config. The default values are probably fine, but they should match any example batch files you have for creating handles on your handle server_                                                                                                                                     |
@@ -324,7 +324,7 @@ main administrator on the platform. Once it has been created, more users
 can be added using the web interface. Wait for the CDCS server to start, then run:
 
 ```shell
-./docker_createsuperuser ${username} ${password} ${email}
+cdcs-docker/deploy$ ./docker_createsuperuser.sh ${username} ${password} ${email}
 ```
 
 ## 4. Initialize database
@@ -334,13 +334,13 @@ some database initialization commands have been added. These commands need to be
 after the initial deployment of the application.  
 
 - To load the **modules**, run the following command:
-```commandline
+```shell
 ./docker_loadmodules.sh
 ```
 **NOTE**: If modules are added/removed from the project's `INSTALLED_APPS`, the commands needs to be run again.
 
 - To load the **exporters**, run the following command:
-```commandline
+```shell
 ./docker_loadexporters.sh
 ```
 

@@ -1,5 +1,5 @@
 ARG PYTHON_VERSION
-FROM python:$PYTHON_VERSION as clone
+FROM python:$PYTHON_VERSION AS clone
 
 ARG CDCS_REPO
 ARG BRANCH
@@ -11,7 +11,7 @@ RUN apt-get update && apt-get install -y git
 RUN git clone --depth 1 -b $BRANCH $CDCS_REPO /tmp/repo
 
 ARG PYTHON_VERSION
-FROM python:$PYTHON_VERSION as build
+FROM python:$PYTHON_VERSION AS build
 LABEL maintainer="National Institute of Standards and Technology"
 
 ARG PROJECT_NAME
@@ -46,7 +46,7 @@ RUN pip install -r requirements.core.txt
 COPY ./gunicorn.conf.py /etc
 COPY ./docker-entrypoint*.sh /
 COPY ./scripts /scripts
-RUN chmod +x /docker-entrypoint*.sh /scripts/*
+RUN chmod a+x /docker-entrypoint*.sh /scripts/*
 
 # Create folder for uwsgi socket, static files, media files
 RUN mkdir /tmp/curator $DOCKYARD_SRVPROJ/static.prod $DOCKYARD_SRVPROJ/media
