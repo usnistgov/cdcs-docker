@@ -46,7 +46,7 @@ RUN pip install -r requirements.core.txt
 COPY ./gunicorn.conf.py /etc
 COPY ./docker-entrypoint*.sh /
 COPY ./scripts /scripts
-RUN chmod +x /docker-entrypoint*.sh /scripts/*
+RUN chmod a+x /docker-entrypoint*.sh /scripts/*
 
 # Create folder for uwsgi socket, static files, media files
 RUN mkdir /tmp/curator $DOCKYARD_SRVPROJ/static.prod $DOCKYARD_SRVPROJ/media
@@ -55,9 +55,6 @@ RUN mkdir /tmp/curator $DOCKYARD_SRVPROJ/static.prod $DOCKYARD_SRVPROJ/media
 RUN groupadd cdcs && \
     adduser cdcs --disabled-password --gecos '' --ingroup cdcs  && \
     chown -R cdcs:cdcs $DOCKYARD_SRVPROJ /tmp/curator
-
-RUN chown cdcs:cdcs /docker-entrypoint*.sh
-RUN chown -R cdcs:cdcs /scripts/
 
 USER cdcs
 

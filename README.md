@@ -34,7 +34,7 @@ Below is the list of environment variables to set and their description.
 ### 2. Build the image
 
 ```shell
-docker-compose build --no-cache
+cdcs-docker/build$ docker-compose build --no-cache
 ```
 
 ### 3. Build a custom image (optional)
@@ -324,7 +324,6 @@ main administrator on the platform. Once it has been created, more users
 can be added using the web interface. Wait for the CDCS server to start, then run:
 
 ```shell
-cdcs-docker/deploy/mongo$ chmod a+r mongo-init.sh
 cdcs-docker/deploy$ ./docker_createsuperuser.sh ${username} ${password} ${email}
 ```
 
