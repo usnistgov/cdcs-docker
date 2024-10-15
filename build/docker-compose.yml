@@ -5,8 +5,8 @@ services:
     build:
       context: ./cdcs
       args:
-      - CDCS_REPO=${CDCS_REPO}
-      - BRANCH=${BRANCH}
-      - PROJECT_NAME=${PROJECT_NAME}
-      - PIP_CONF=${PIP_CONF}
-      - PYTHON_VERSION=${PYTHON_VERSION}
+        - CDCS_REPO=${CDCS_REPO}
+        - BRANCH=${BRANCH}
+        - PROJECT_NAME=${PROJECT_NAME}
+        - PIP_CONF=${PIP_CONF}
+        - PYTHON_VERSION=${PYTHON_VERSION}

@@ -1,6 +1,6 @@
 ARG BASE_IMAGE_NAME
 ARG BASE_IMAGE_VERSION
-FROM $BASE_IMAGE_NAME:$BASE_IMAGE_VERSION as custom
+FROM $BASE_IMAGE_NAME:$BASE_IMAGE_VERSION AS custom
 LABEL maintainer="National Institute of Standards and Technology"
 
 # Get args
