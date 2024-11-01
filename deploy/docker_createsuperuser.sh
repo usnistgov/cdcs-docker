@@ -11,4 +11,4 @@ if [ $# -ge 2 ]
     fi
 fi
 
-docker exec $PROJECT_NAME"_cdcs" python ./manage.py shell -c  "from django.contrib.auth.models import User; User.objects.create_superuser('$user', '$email', '$pass')"
+docker exec $COMPOSE_PROJECT_NAME"_cdcs" python ./manage.py shell -c  "from django.contrib.auth.models import User; User.objects.create_superuser('$user', '$email', '$pass')"

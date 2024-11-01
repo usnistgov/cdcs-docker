@@ -1,8 +1,7 @@
-version: "3"
 services:
   curator_mongo:
     image: mongo:${MONGO_VERSION}
-    container_name: ${PROJECT_NAME}_cdcs_mongo
+    container_name: ${COMPOSE_PROJECT_NAME}_cdcs_mongo
     restart: always
     environment:
       - MONGO_INITDB_ROOT_USERNAME=${MONGO_ADMIN_USER}
