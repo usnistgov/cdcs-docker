@@ -85,7 +85,7 @@ and filled.
 
 | Variable              | Description                                                                                                                                                                                               |
 |-----------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| COMPOSE_PROJECT_NAME  | Name of the deployment                                                                                                                                                                                    |
+| COMPOSE_PROJECT_NAME  | Name of the deployment (default: root folder of the deployment "deploy"), see [Multiple deployments](#multiple-deployments-on-the-same-machine)                                                           |
 | PROJECT_NAME          | Name of the CDCS/Django project to deploy (e.g. mdcs, nmrr)                                                                                                                                               |
 | IMAGE_NAME            | Name of the CDCS image to deploy (e.g. mdcs, nmrr)                                                                                                                                                        |
 | IMAGE_VERSION         | Version of the CDCS image to deploy (e.g. latest, 2.10.0)                                                                                                                                                 |
@@ -348,10 +348,10 @@ after the initial deployment of the application.
 ## 5. Access
 
 The CDCS is now available at the `SERVER_URI` set at deployment.
-Please read important deployment information in the troubleshoot section below.
+Please read important deployment information in the [Troubleshooting](#6-troubleshooting) section below.
 
 
-## 6. Troubleshoot
+## 6. Troubleshooting
 
 ## Local deployment
 
@@ -389,11 +389,13 @@ ALLOWED_HOSTS=*
 
 ## Multiple deployments on the same machine
 
-To deploy two CDCS instances on the same machine, follow the steps below.
+To deploy two CDCS instances on the same machine, use the 
+docker compose environment variable [COMPOSE_PROJECT_NAME](https://docs.docker.com/compose/how-tos/environment-variables/envvars/#compose_project_name).
+
 In this example the two deployment will be called `mdcs1` and `mdcs2`.
 For the first deployment, update `deploy/.env`:
 - Set `COMPOSE_PROJECT_NAME=mdcs1`
-- Set ports to use on the host:
+- Set the ports to use on the host:
 ```
 NGINX_PORT_80=80
 NGINX_PORT_443=443
@@ -422,7 +424,7 @@ docker logs -f mdcs_cdcs_redis
 
 
 From https://hub.docker.com/_/mongo
-> By default Mongo will set the wiredTigerCacheSizeGB to a value
+> By default, Mongo will set the wiredTigerCacheSizeGB to a value
 proportional to the host's total memory regardless of memory limits
 you may have imposed on the container. In such an instance you will
 want to set the cache size to something appropriate, taking into
