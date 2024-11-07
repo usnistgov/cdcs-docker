@@ -146,7 +146,7 @@ Before CDCS 2.12, this was the default single sign-on option, with SAML2
 being the only supported protocol (see [django-allauth](#django-allauth)
 section for more options).
 
-Install the required dependencies by adding to the project's `requirement.core.txt`:
+Install the required dependencies by adding to the project's `requirements.core.txt`:
 ```
 core-main-app[auth]
 core-main-app[auth]==2.12.* # to install a specific version
@@ -197,7 +197,7 @@ Since CDCS 2.12, extended authentication options are available with [django-alla
 - local MFA or via 3rd party application,
 - authentication with 3rd party applications such as GitHub, Gmail and more.
 
-Install the required dependencies by adding to the project's `requirement.core.txt`:
+Install the required dependencies by adding to the project's `requirements.core.txt`:
 ```
 core-main-app[allauth]
 core-main-app[allauth]==2.12.* # to install a specific version
