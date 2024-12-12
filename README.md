@@ -20,15 +20,15 @@ vim .env
 
 Below is the list of environment variables to set and their description.
 
-| Variable | Description |
-| ----------- | ----------- |
-| PROJECT_NAME          | Name of the CDCS/Django project to build (e.g. mdcs, nmrr) |
-| IMAGE_NAME            | Name of the image to build (e.g. mdcs, nmrr) |
-| IMAGE_VERSION         | Version of the image to build (e.g. latest, 2.10.0) |
-| CDCS_REPO             | URL of the CDCS repository to clone to build the image (e.g. https://github.com/usnistgov/mdcs.git) |
-| BRANCH                | Branch/Tag of the repository to pull to build the image (e.g. master, 2.10.0) |
-| PIP_CONF              | Pip configuration file to use to build the image |
-| PYTHON_VERSION        | Version of the Python image to use as a base image for the CDCS image |
+| Variable       | Description                                                                                         |
+|----------------|-----------------------------------------------------------------------------------------------------|
+| PROJECT_NAME   | Name of the CDCS/Django project to build (e.g. mdcs, nmrr)                                          |
+| IMAGE_NAME     | Name of the image to build (e.g. mdcs, nmrr)                                                        |
+| IMAGE_VERSION  | Version of the image to build (e.g. latest, 2.10.0)                                                 |
+| CDCS_REPO      | URL of the CDCS repository to clone to build the image (e.g. https://github.com/usnistgov/mdcs.git) |
+| BRANCH         | Branch/Tag of the repository to pull to build the image (e.g. master, 2.10.0)                       |
+| PIP_CONF       | Pip configuration file to use to build the image                                                    |
+| PYTHON_VERSION | Version of the Python image to use as a base image for the CDCS image                               |
 
 
 ### 2. Build the image
@@ -83,52 +83,53 @@ Below is the list of environment variables that can be set and their
 description. Commented variables in the `.env` need to be uncommented
 and filled.
 
-| Variable | Description |
-| ----------- | ----------- |
-| PROJECT_NAME          | Name of the CDCS/Django project to deploy (e.g. mdcs, nmrr) |
-| IMAGE_NAME            | Name of the CDCS image to deploy (e.g. mdcs, nmrr) |
-| IMAGE_VERSION         | Version of the CDCS image to deploy (e.g. latest, 2.10.0) |
-| HOSTNAME              | Hostname of the server (e.g. for local deployment, use the machine's IP address xxx.xxx.xxx.xxx) |
-| SERVER_URI            | URI of server (e.g. for local deployment, http://xxx.xxx.xxx.xxx) |
-| ALLOWED_HOSTS         | Comma-separated list of hosts (e.g. ALLOWED_HOSTS=127.0.0.1,localhost), see [Allowed Hosts](https://docs.djangoproject.com/en/4.2/ref/settings/#allowed-hosts) |
-| SERVER_NAME           | Name of the server (e.g. MDCS) |
-| SETTINGS              | Settings file to use during deployment ([more info in the Settings section](#settings))|
+| Variable              | Description                                                                                                                                                                                               |
+|-----------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| COMPOSE_PROJECT_NAME  | Name of the deployment (default: root folder of the deployment "deploy"), see [Multiple deployments](#multiple-deployments-on-the-same-machine)                                                           |
+| PROJECT_NAME          | Name of the CDCS/Django project to deploy (e.g. mdcs, nmrr)                                                                                                                                               |
+| IMAGE_NAME            | Name of the CDCS image to deploy (e.g. mdcs, nmrr)                                                                                                                                                        |
+| IMAGE_VERSION         | Version of the CDCS image to deploy (e.g. latest, 2.10.0)                                                                                                                                                 |
+| HOSTNAME              | Hostname of the server (e.g. for local deployment, use the machine's IP address xxx.xxx.xxx.xxx)                                                                                                          |
+| SERVER_URI            | URI of server (e.g. for local deployment, http://xxx.xxx.xxx.xxx)                                                                                                                                         |
+| ALLOWED_HOSTS         | Comma-separated list of hosts (e.g. ALLOWED_HOSTS=127.0.0.1,localhost), see [Allowed Hosts](https://docs.djangoproject.com/en/4.2/ref/settings/#allowed-hosts)                                            |
+| SERVER_NAME           | Name of the server (e.g. MDCS)                                                                                                                                                                            |
+| SETTINGS              | Settings file to use during deployment ([more info in the Settings section](#settings))                                                                                                                   |
 | SERVER_CONF           | Mount appropriate nginx file (e.g. `default` for http deployment using a uWSGI UNIX socket, `https` to enable SSL, or `gunicorn_http[s]`. The protocol of the `SERVER_URI` should be updated accordingly) |
-| MONGO_PORT            | MongoDB Port (default: 27017) |
-| MONGO_ADMIN_USER      | Admin user for MongoDB (should be different from `MONGO_USER`) |
-| MONGO_ADMIN_PASS      | Admin password for MongoDB |
-| MONGO_USER            | User for MongoDB (should be different from `MONGO_ADMIN_USER`) |
-| MONGO_PASS            | User password for MongoDB |
-| MONGO_DB              | Name of the Mongo database (e.g. cdcs) |
-| POSTGRES_PORT         | Postgres Port (default: 5432) |
-| POSTGRES_USER         | User for Postgres |
-| POSTGRES_PASS         | User password for Postgres |
-| POSTGRES_DB           | Name of the Postgres database (e.g. cdcs) |
-| REDIS_PORT            | Redis Port (default: 6379) |
-| REDIS_PASS            | Password for Redis |
-| DJANGO_SECRET_KEY     | [Secret Key](https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/#secret-key) for Django (should be a "large random value") |
-| NGINX_PORT_80         | Expose port 80 on host machine for NGINX |
-| NGINX_PORT_443        | Expose port 443 on host machine for NGINX |
-| MONGO_VERSION         | Version of the MongoDB image |
-| REDIS_VERSION         | Version of the Redis image |
-| POSTGRES_VERSION      | Version of the Postgres image |
-| NGINX_VERSION         | Version of the NGINX image |
-| WEB_SERVER            | Web server for the CDCS (e.g. `uwsgi`, `gunicorn`)
-| PROCESSES             | Number of uWSGI processes (default `--processes=8`) / Gunicorn workers to start (default `workers=cpu_count() * 2 + 1`) |
-| THREADS               | Number of uWSGI/Gunicorn threads per process/worker (default 8)|
-| MONITORING_SERVER_URI | (optional) URI of an APM server for monitoring |
+| MONGO_PORT            | MongoDB Port (default: 27017)                                                                                                                                                                             |
+| MONGO_ADMIN_USER      | Admin user for MongoDB (should be different from `MONGO_USER`)                                                                                                                                            |
+| MONGO_ADMIN_PASS      | Admin password for MongoDB                                                                                                                                                                                |
+| MONGO_USER            | User for MongoDB (should be different from `MONGO_ADMIN_USER`)                                                                                                                                            |
+| MONGO_PASS            | User password for MongoDB                                                                                                                                                                                 |
+| MONGO_DB              | Name of the Mongo database (e.g. cdcs)                                                                                                                                                                    |
+| POSTGRES_PORT         | Postgres Port (default: 5432)                                                                                                                                                                             |
+| POSTGRES_USER         | User for Postgres                                                                                                                                                                                         |
+| POSTGRES_PASS         | User password for Postgres                                                                                                                                                                                |
+| POSTGRES_DB           | Name of the Postgres database (e.g. cdcs)                                                                                                                                                                 |
+| REDIS_PORT            | Redis Port (default: 6379)                                                                                                                                                                                |
+| REDIS_PASS            | Password for Redis                                                                                                                                                                                        |
+| DJANGO_SECRET_KEY     | [Secret Key](https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/#secret-key) for Django (should be a "large random value")                                                                  |
+| NGINX_PORT_80         | Expose port 80 on host machine for NGINX                                                                                                                                                                  |
+| NGINX_PORT_443        | Expose port 443 on host machine for NGINX                                                                                                                                                                 |
+| MONGO_VERSION         | Version of the MongoDB image                                                                                                                                                                              |
+| REDIS_VERSION         | Version of the Redis image                                                                                                                                                                                |
+| POSTGRES_VERSION      | Version of the Postgres image                                                                                                                                                                             |
+| NGINX_VERSION         | Version of the NGINX image                                                                                                                                                                                |
+| WEB_SERVER            | Web server for the CDCS (e.g. `uwsgi`, `gunicorn`)                                                                                                                                                        |
+| PROCESSES             | Number of uWSGI processes (default `--processes=8`) / Gunicorn workers to start (default `workers=cpu_count() * 2 + 1`)                                                                                   |
+| THREADS               | Number of uWSGI/Gunicorn threads per process/worker (default 8)                                                                                                                                           |
+| MONITORING_SERVER_URI | (optional) URI of an APM server for monitoring                                                                                                                                                            |
 
 A few additional environment variables are provided to the CDCS
 container. The variables below are computed based on the values of
 other variables. If changed, some portions of the `docker-compose.yml`
 might need to be updated to stay consistent.
 
-| Variable | Description |
-| ----------- | ----------- |
-| DJANGO_SETTINGS_MODULE  | [`DJANGO_SETTINGS_MODULE`](https://docs.djangoproject.com/en/4.2/topics/settings/#envvar-DJANGO_SETTINGS_MODULE) (set using the values of `PROJECT_NAME` and `SETTINGS`)  |
-| MONGO_HOST | Mongodb hostname (set to `${PROJECT_NAME}_cdcs_mongo`) |
-| POSTGRES_HOST | Postgres hostname (set to `${PROJECT_NAME}_cdcs_postgres`) |
-| REDIS_HOST | REDIS hostname (set to `${PROJECT_NAME}_cdcs_redis`) |
+| Variable               | Description                                                                                                                                                              |
+|------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| DJANGO_SETTINGS_MODULE | [`DJANGO_SETTINGS_MODULE`](https://docs.djangoproject.com/en/4.2/topics/settings/#envvar-DJANGO_SETTINGS_MODULE) (set using the values of `PROJECT_NAME` and `SETTINGS`) |
+| MONGO_HOST             | Mongodb hostname (set to `${PROJECT_NAME}_cdcs_mongo`)                                                                                                                   |
+| POSTGRES_HOST          | Postgres hostname (set to `${PROJECT_NAME}_cdcs_postgres`)                                                                                                               |
+| REDIS_HOST             | REDIS hostname (set to `${PROJECT_NAME}_cdcs_redis`)                                                                                                                     |
 
 
 #### Authentication
@@ -316,23 +317,23 @@ data and blobs. This requires some setting of environment variables at deploy
 time to configure effectively. Please see the file
 `./deploy/handle/.env.example` for more details.
 
-| Variable                             | Description                                                                                                                                                                                                                                                                                                                           |
-|--------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `ENABLE_HANDLE_PID`                  | Controls whether CDCS is configured to use a handle server for PIDs. If so, all the values below should be set to values specific for your handle server config (contact your handle server administrator for any help). If you enable Handle integration but don't set these values correctly; it's _very_ likely things won't work. |
-| `HANDLE_NET_LOOKUP_URL`              | The URL of the handle server to display links (e.g. https://hdl.handle.net)                                                                                                                                                                                                                                                           |
-| `HANDLE_NET_REGISTRATION_URL`        | The URL of the handle server for registering records (e.g. https://my-handle-net.domain)                                                                                                                                                                                                                                              |
-| `ID_PROVIDER_PREFIXES`               | Prefixes to use when creating handles for data and blobs in CDCS. Comma-separated values.                                                                                                                                                                                                                                             |
-| `HANDLE_NET_USER`                    | Handle server authentication for a user that has admin rights to list and create handles on the provided prefix. The value provided here will be encoded as "300:{HANDLE_NET_PREFIX}/{HANDLE_NET_USER}" when it is sent to the handle server, so this value should be just the suffix of the admin handle                             |
-| `HANDLE_NET_SECRET_KEY`              | The "secret key" for the admin user specified above. This should be provided as plain text and not encoded in any way. This value corresponds to the secret key that would be used if you were creating a handle via batch file                                                                                                       |
-| `PID_PATH`                          | The location in the default schema in which to store and search for PID values. Should be provided in "dot" notation, with attributes indicated using the "@" character. For example, if your PIDs are stored in an attribute named "pid" on the root element named "Resource", the PID_PATH value should be "Resource.@pid"         |
-| `AUTO_SET_PID`                       | Whether to auto-create PIDs for records that are curated or uploaded without them. Should likely be True if you're using PIDs at all                                                                                                                                                                                                  |
-| `HANDLE_NET_RECORD_INDEX`            | Starting index for records when minting handles                                                                                                                                                                                                                                                                                       |
-|                                      | _The following are admin settings for the handle config. The default values are probably fine, but they should match any example batch files you have for creating handles on your handle server_                                                                                                                                     |
-| `HANDLE_NET_ADMIN_INDEX`             | The admin index value (default: `100`)                                                                                                                                                                                                                                                                                                |
-| `HANDLE_NET_ADMIN_TYPE`              | The admin type (default: `HS_ADMIN`)                                                                                                                                                                                                                                                                                                  |
-| `HANDLE_NET_ADMIN_DATA_FORMAT`       | The admin data format (default: `admin`)                                                                                                                                                                                                                                                                                              |
-| `HANDLE_NET_ADMIN_DATA_INDEX`        | The admin data index value (default: `200`)                                                                                                                                                                                                                                                                                           |
-| `HANDLE_NET_ADMIN_DATA_PERMISSIONS`  | The admin data permissions (default: `011111110011`)                                                                                                                                                                                                                                                                                  |
+| Variable                            | Description                                                                                                                                                                                                                                                                                                                           |
+|-------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `ENABLE_HANDLE_PID`                 | Controls whether CDCS is configured to use a handle server for PIDs. If so, all the values below should be set to values specific for your handle server config (contact your handle server administrator for any help). If you enable Handle integration but don't set these values correctly; it's _very_ likely things won't work. |
+| `HANDLE_NET_LOOKUP_URL`             | The URL of the handle server to display links (e.g. https://hdl.handle.net)                                                                                                                                                                                                                                                           |
+| `HANDLE_NET_REGISTRATION_URL`       | The URL of the handle server for registering records (e.g. https://my-handle-net.domain)                                                                                                                                                                                                                                              |
+| `ID_PROVIDER_PREFIXES`              | Prefixes to use when creating handles for data and blobs in CDCS. Comma-separated values.                                                                                                                                                                                                                                             |
+| `HANDLE_NET_USER`                   | Handle server authentication for a user that has admin rights to list and create handles on the provided prefix. The value provided here will be encoded as "300:{HANDLE_NET_PREFIX}/{HANDLE_NET_USER}" when it is sent to the handle server, so this value should be just the suffix of the admin handle                             |
+| `HANDLE_NET_SECRET_KEY`             | The "secret key" for the admin user specified above. This should be provided as plain text and not encoded in any way. This value corresponds to the secret key that would be used if you were creating a handle via batch file                                                                                                       |
+| `PID_PATH`                          | The location in the default schema in which to store and search for PID values. Should be provided in "dot" notation, with attributes indicated using the "@" character. For example, if your PIDs are stored in an attribute named "pid" on the root element named "Resource", the PID_PATH value should be "Resource.@pid"          |
+| `AUTO_SET_PID`                      | Whether to auto-create PIDs for records that are curated or uploaded without them. Should likely be True if you're using PIDs at all                                                                                                                                                                                                  |
+| `HANDLE_NET_RECORD_INDEX`           | Starting index for records when minting handles                                                                                                                                                                                                                                                                                       |
+|                                     | _The following are admin settings for the handle config. The default values are probably fine, but they should match any example batch files you have for creating handles on your handle server_                                                                                                                                     |
+| `HANDLE_NET_ADMIN_INDEX`            | The admin index value (default: `100`)                                                                                                                                                                                                                                                                                                |
+| `HANDLE_NET_ADMIN_TYPE`             | The admin type (default: `HS_ADMIN`)                                                                                                                                                                                                                                                                                                  |
+| `HANDLE_NET_ADMIN_DATA_FORMAT`      | The admin data format (default: `admin`)                                                                                                                                                                                                                                                                                              |
+| `HANDLE_NET_ADMIN_DATA_INDEX`       | The admin data index value (default: `200`)                                                                                                                                                                                                                                                                                           |
+| `HANDLE_NET_ADMIN_DATA_PERMISSIONS` | The admin data permissions (default: `011111110011`)                                                                                                                                                                                                                                                                                  |
 
 
 #### Settings
@@ -367,8 +368,8 @@ recommended for MDCS/NMRR 2.14 and below.
     - set the `SETTINGS` variable to `settings`.
 
 The [`DJANGO_SETTINGS_MODULE`](https://docs.djangoproject.com/en/4.2/topics/settings/#envvar-DJANGO_SETTINGS_MODULE)
-environment variable can be set to select which settings to use. By
-default the `docker-compose` file sets it using the values of
+environment variable can be set to select which settings to use. 
+By default, the `docker-compose` file sets it using the values of
 `PROJECT_NAME` and `SETTINGS` variables.
 
 For more information about production deployment of a Django project,
@@ -431,10 +432,10 @@ after the initial deployment of the application.
 ## 5. Access
 
 The CDCS is now available at the `SERVER_URI` set at deployment.
-Please read important deployment information in the troubleshoot section below.
+Please read important deployment information in the [Troubleshooting](#6-troubleshooting) section below.
 
 
-## 6. Troubleshoot
+## 6. Troubleshooting
 
 ## Local deployment
 
@@ -470,10 +471,31 @@ ALLOWED_HOSTS=*
 - Add HTTPS configuration to the mounted `settings.py` file
 - Have a look at the [deployment checklist](https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/#deployment-checklist)
 
+## Multiple deployments on the same machine
+
+To deploy two CDCS instances on the same machine, use the 
+docker compose environment variable [COMPOSE_PROJECT_NAME](https://docs.docker.com/compose/how-tos/environment-variables/envvars/#compose_project_name).
+
+In this example the two deployment will be called `mdcs1` and `mdcs2`.
+For the first deployment, update `deploy/.env`:
+- Set `COMPOSE_PROJECT_NAME=mdcs1`
+- Set the ports to use on the host:
+```
+NGINX_PORT_80=80
+NGINX_PORT_443=443
+```
+For the second deployment, update `deploy/.env`:
+- Set `COMPOSE_PROJECT_NAME=mdcs2`
+- Set different ports to use on the host:
+```
+NGINX_PORT_80=8080
+NGINX_PORT_443=8443
+```
+
 ## Logs
 
 Make sure every component is running properly by checking the logs.
-For example, to check the logs of an MDCS instance (`PROJECT_NAME=mdcs`), use the following commands:
+For example, to check the logs of an MDCS instance (`COMPOSE_PROJECT_NAME=mdcs`), use the following commands:
 ```shell
 docker logs -f mdcs_cdcs
 docker logs -f mdcs_cdcs_nginx
@@ -486,7 +508,7 @@ docker logs -f mdcs_cdcs_redis
 
 
 From https://hub.docker.com/_/mongo
-> By default Mongo will set the wiredTigerCacheSizeGB to a value
+> By default, Mongo will set the wiredTigerCacheSizeGB to a value
 proportional to the host's total memory regardless of memory limits
 you may have imposed on the container. In such an instance you will
 want to set the cache size to something appropriate, taking into
@@ -576,9 +598,9 @@ COMPOSE_FILE=docker-compose.yml:elasticsearch/docker-compose.yml
 
 Add and fill the following environment variables:
 
-| Variable | Description |
-| ----------- | ----------- |
-| ELASTIC_VERSION          | Version of the Elasticsearch image (e.g. 7.16.2) |
+| Variable        | Description                                      |
+|-----------------|--------------------------------------------------|
+| ELASTIC_VERSION | Version of the Elasticsearch image (e.g. 7.16.2) |
 
 On linux, you will need to increase the available [virtual memory](https://www.elastic.co/guide/en/elasticsearch/reference/7.x/vm-max-map-count.html).
 
@@ -625,7 +647,7 @@ docker-compose up -d
 ```
 
 **NOTE**: the script will do dry runs and ask for confirmation before applying the changes, but it is  
-recommended to create a back up of the databases before starting the migration.
+recommended to create a backup of the databases before starting the migration.
 
 # Disclaimer
 
