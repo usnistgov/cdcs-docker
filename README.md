@@ -132,10 +132,29 @@ might need to be updated to stay consistent.
 | REDIS_HOST             | REDIS hostname (set to `${PROJECT_NAME}_cdcs_redis`)                                                                                                                     |
 
 
-#### SAML2
+#### Authentication
+
+The CDCS supports several authentication methods:
+- Local accounts (default),
+- Single sign-on with [djangosaml2](#djangosaml2),
+- Extended authentication options with [django-allauth](#django-allauth) 
+  - support for local accounts, SAML2, local MFA and more,
+  - available since CDCS 2.12.
+
+#### djangosaml2
+
+Before CDCS 2.12, this was the default single sign-on option, with SAML2
+being the only supported protocol (see [django-allauth](#django-allauth)
+section for more options).
+
+Install the required dependencies by adding to the project's `requirements.core.txt`:
+```
+core-main-app[auth]
+core-main-app[auth]==2.12.* # to install a specific version
+```
 
 Configure SAML2 authentication by providing values for the following environment variables in the `saml2/.env` file.
-See `saml2/.env.example` for an example of SAML2 configuration with a Keycloak server.
+See `saml2/.env.djangosaml2.example` for an example of SAML2 configuration with a Keycloak Identity Provider.
 
 | Variable                        | Description                                                                                                                                                                                  |
 |---------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -170,6 +189,68 @@ See `saml2/.env.example` for an example of SAML2 configuration with a Keycloak s
 | ORGANIZATION_DISPLAY_NAME_N     | Organization display name N (see [organization](https://pysaml2.readthedocs.io/en/latest/howto/config.html#organization))                                                                    |
 | ORGANIZATION_URL_N              | Organization url N (see [organization](https://pysaml2.readthedocs.io/en/latest/howto/config.html#organization))                                                                             |
 
+
+#### django-allauth
+
+Since CDCS 2.12, extended authentication options are available with [django-allauth](https://docs.allauth.org/en/latest/index.html) including:
+- single sign-on with SAML2 or OpenID Connect,
+- local accounts,
+- local MFA or via 3rd party application,
+- authentication with 3rd party applications such as GitHub, Gmail and more.
+
+Install the required dependencies by adding to the project's `requirements.core.txt`:
+```
+core-main-app[allauth]
+core-main-app[allauth]==2.12.* # to install a specific version
+```
+
+Configure SAML2 authentication by providing values for the following environment variables in the `saml2/.env` file.
+See `saml2/.env.allauth.example` for an example of SAML2 configuration with a Keycloak Identity Provider. 
+Environment variables will be used to register a [django-allauth SAML provider](https://docs.allauth.org/en/latest/socialaccount/providers/saml.html#saml).
+
+| Variable                         | Description                                                                                                                                                            |
+|----------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| ENABLE_ALLAUTH                   | Enable django-allauth (e.g. `ENABLE_ALLAUTH=True`)                                                                                                                     |
+| ENABLE_SAML2_SSO_AUTH            | Enable SAML2 authentication (e.g. `ENABLE_SAML2_SSO_AUTH=True`)                                                                                                        |
+| ENABLE_ALLAUTH_LOCAL_MFA         | Enable local multi-factor authentication (e.g. `ENABLE_ALLAUTH_LOCAL_MFA=True`)                                                                                        |
+| SAML_CLIENT_ID                   | Organization slug used in the SAML login URL (e.g. if set to `cdcs`, login URL would be `/accounts/saml/cdcs/login/`)                                                  |
+| SAML_PROVIDER_NAME               | Provider name to be displayed                                                                                                                                          |
+| SAML_PROVIDER_ID                 | Provider i. The combination of this value and a uid should be unique                                                                                                   |
+| SAML_EMAIL_AUTHENTICATION        | Allow authentication using a matching email address from a trusted Identity Provider                                                                                   |
+| SAML_VERIFIED_EMAIL              | Ensure email address(es) retrieved from the provider are to be interpreted as verified. Can be set to a boolean or a list of accepted domains                          |
+| SAML_ATTRIBUTES_MAP_UID          | SAML attribute mapping to uid                                                                                                                                          |
+| SAML_ATTRIBUTES_MAP_UID_FIELD    | SAML attribute mapping uid field name                                                                                                                                  |
+| SAML_ATTRIBUTES_MAP_EMAIL        | SAML attribute mapping to email                                                                                                                                        |
+| SAML_ATTRIBUTES_MAP_EMAIL_FIELD  | SAML attribute mapping email field name                                                                                                                                |
+| SAML_ATTRIBUTES_MAP_CN           | SAML attribute mapping to common name                                                                                                                                  |
+| SAML_ATTRIBUTES_MAP_CN_FIELD     | SAML attribute mapping common name field name                                                                                                                          |
+| SAML_ATTRIBUTES_MAP_SN           | SAML attribute mapping to surname                                                                                                                                      |
+| SAML_ATTRIBUTES_MAP_SN_FIELD     | SAML attribute mapping surname field name                                                                                                                              |
+| SAML_IDP_ENTITY_ID               | Entity ID of the IdP                                                                                                                                                   |
+| SAML_IDP_METADATA_URL            | IdP's metadata URL                                                                                                                                                     |
+| SAML_SP_ENTITY_ID                | Service Provider Entity ID                                                                                                                                             |
+| SAML_ALLOW_REPEAT_ATTRIBUTE_NAME | Advanced settings: allow_repeat_attribute_name                                                                                                                         |
+| SAML_ALLOW_SINGLE_LABEL_DOMAINS  | Advanced settings: allow_single_label_domains                                                                                                                          |
+| SAML_AUTHN_REQUEST_SIGNED        | Advanced settings: authn_request_signed                                                                                                                                |
+| SAML_DIGEST_ALGORITHM            | Advanced settings: digest_algorithm                                                                                                                                    |
+| SAML_LOGOUT_REQUEST_SIGNED       | Advanced settings: logout_request_signed                                                                                                                               |
+| SAML_LOGOUT_RESPONSE_SIGNED      | Advanced settings: logout_response_signed                                                                                                                              |
+| SAML_METADATA_SIGNED             | Advanced settings: metadata_signed                                                                                                                                     |
+| SAML_NAME_ID_ENCRYPTED           | Advanced settings: name_id_encrypted                                                                                                                                   |
+| SAML_NAME_ID_FORMAT              | Advanced settings: name_id_format                                                                                                                                      |
+| SAML_PRIVATE_KEY                 | Advanced settings: name_private_key                                                                                                                                    |
+| SAML_REJECT_DEPRECATED_ALGORITHM | Advanced settings: reject_deprecated_algorithm                                                                                                                         |
+| SAML_REJECT_IDP_INITIATED_SSO    | Advanced settings: reject_idp_initiated_sso                                                                                                                            |
+| SAML_SIGNATURE_ALGORITHM         | Advanced settings: signature_algorithm                                                                                                                                 |
+| SAML_WANT_ASSERTION_ENCRYPTED    | Advanced settings: want_assertion_encrypted                                                                                                                            |
+| SAML_WANT_ASSERTION_SIGNED       | Advanced settings: want_assertion_signed                                                                                                                               |
+| SAML_WANT_ATTRIBUTE_STATEMENT    | Advanced settings: want_attribute_statement                                                                                                                            |
+| SAML_WANT_MESSAGE_SIGNED         | Advanced settings: want_message_signed                                                                                                                                 |
+| SAML_WANT_NAME_ID                | Advanced settings: want_name_id                                                                                                                                        |
+| SAML_WANT_NAME_ID_ENCRYPTED      | Advanced settings: want_name_id_encrypted                                                                                                                              |
+| SAML_X509CERT                    | Advanced settings: x509cert                                                                                                                                            |
+
+
 ##### Contact Person and Organization environment variables
 
 Environment variables ending with suffix `_N` are expecting `N` to be a sequence of integers starting at `1`.
@@ -179,7 +260,7 @@ CONTACT_PERSON_1=
 CONTACT_PERSON_2=
 ```
 
-1. Contact Person
+1. Contact Person (djangosaml2/django-allauth)
 
 A contact person environment variable is expecting a comma separated list of values in the following order:
 - given name,
@@ -193,7 +274,10 @@ For example:
 CONTACT_PERSON_1=Firstname1,Lastname1,Example Co.,contact1@example.com,technical
 ```
 
-2. Organization
+> :page_facing_up: **django-allauth:** Only 1 person per role supported 
+> (e.g. one technical and one administrative)
+
+2. Organization (djangosaml2 only)
 
 Each section of the SAML organization configuration is stored in a separate environment variable. Each variable is expecting a comma separated pair
 composed of:
