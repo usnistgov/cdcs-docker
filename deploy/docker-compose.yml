@@ -44,7 +44,8 @@ services:
       - cdcs_socket:/tmp/curator/
       - cdcs_static:/srv/curator/static.prod
       # Uncomment to mount additional settings file
-#      - ./cdcs/${SETTINGS}.py:/srv/curator/${PROJECT_NAME}/${SETTINGS}.py
+      # - ./cdcs/${SETTINGS}.py:/srv/curator/${PROJECT_NAME}/${SETTINGS}.py
+      - /Users/ryan/workspace/MDCS:/srv/curator
     environment:
       - DJANGO_SETTINGS_MODULE=${PROJECT_NAME}.${SETTINGS}
       - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
@@ -64,10 +65,16 @@ services:
       - REDIS_HOST=${COMPOSE_PROJECT_NAME}_cdcs_redis
       - REDIS_PORT=${REDIS_PORT:-6379}
       - REDIS_PASS=${REDIS_PASS}
+      - PROCESSES=${PROCESSES:-8}
+      - THREADS=${THREADS:-8}
+      - UWSGI_AUTORELOAD=${UWSGI_AUTORELOAD:-0}
+      - START_CELERY=${START_CELERY:-true}
     env_file:
       - ./saml2/.env
       - ./handle/.env
       - ./extra/.env
+    ports:
+      - "${DEV_HOST_PORT:-8000}:80"
     command:
       - ${PROJECT_NAME}
       - ${WEB_SERVER:-uwsgi}

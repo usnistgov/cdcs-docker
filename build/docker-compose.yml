@@ -9,3 +9,8 @@ services:
         - PROJECT_NAME=${PROJECT_NAME}
         - PIP_CONF=${PIP_CONF}
         - PYTHON_VERSION=${PYTHON_VERSION}
+  openwebui:
+    image: ${OPENWEBUI_IMAGE_NAME:-openwebui_audit}:${OPENWEBUI_IMAGE_VERSION:-latest}
+    build:
+      context: ./openwebui
+      dockerfile: Dockerfile

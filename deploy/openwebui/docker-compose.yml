@@ -1,0 +1,51 @@
+services:
+  curator_openwebui:
+    image: ${OPENWEBUI_IMAGE_NAME:-openwebui_audit}:${OPENWEBUI_IMAGE_VERSION:-latest}
+    container_name: ${COMPOSE_PROJECT_NAME}_openwebui
+    restart: always
+    ports:
+      - "${OPENWEBUI_PORT:-3000}:8080"
+    environment:
+      - OLLAMA_BASE_URL=${OLLAMA_BASE_URL:-http://curator_ollama:11434}
+      - AUDIT_SECRET=${AUDIT_SECRET:-}
+      - AUDIT_LOG_PATH=${AUDIT_LOG_PATH:-/app/backend/data/audit/audit.log}
+    volumes:
+      - openwebui_data:/app/backend/data
+      - ${AUDIT_LOG_DIR:-./openwebui/audit_logs}:/app/backend/data/audit
+  curator_ollama:
+    image: ${OLLAMA_IMAGE_NAME:-ollama/ollama}:${OLLAMA_IMAGE_VERSION:-latest}
+    container_name: ${COMPOSE_PROJECT_NAME}_ollama
+    restart: always
+    ports:
+      - "${OLLAMA_PORT:-11434}:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+  curator_ollama_nvidia:
+    image: ${OLLAMA_IMAGE_NAME:-ollama/ollama}:${OLLAMA_IMAGE_VERSION:-latest}
+    container_name: ${COMPOSE_PROJECT_NAME}_ollama_nvidia
+    restart: always
+    ports:
+      - "${OLLAMA_PORT:-11434}:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=compute,utility
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities:
+                - gpu
+    profiles:
+      - gpu-nvidia
+    networks:
+      default:
+        aliases:
+          - curator_ollama
+
+volumes:
+  openwebui_data:
+  ollama_data:

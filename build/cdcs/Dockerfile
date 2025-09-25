@@ -27,15 +27,18 @@ COPY --from=clone /tmp/repo $DOCKYARD_SRVPROJ
 RUN apt-get update && apt-get --no-install-recommends install -y \
     netcat python g++ gcc dnsutils gettext \
     libxml2-dev libxslt-dev python-dev zlib1g libssl-dev \
-    python3-pip libpq-dev postgresql-client xmlsec1 \
+    python3-pip libpq-dev postgresql-client xmlsec1 libcap2-bin \
     && rm -rf /var/lib/apt/lists/*
+
+# Allow non-root python to bind privileged ports (e.g., runserver on 80)
+RUN setcap 'cap_net_bind_service=+ep' "$(readlink -f $(which python3))"
 
 # Setup pip
 RUN mkdir -p /root/.config/pip
 COPY pip/$PIP_CONF/pip.conf /root/.config/pip
 
-# Install additional python packages
-RUN pip install psycopg2 uwsgi gunicorn[gthread]
+# Install additional python packages required by the runtime
+RUN pip install psycopg2 uwsgi gunicorn[gthread] pyarrow ijson
 
 # Install requirements
 WORKDIR $DOCKYARD_SRVPROJ
