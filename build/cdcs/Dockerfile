@@ -25,8 +25,8 @@ COPY --from=clone /tmp/repo $DOCKYARD_SRVPROJ
 
 # Install necessary packages
 RUN apt-get update && apt-get --no-install-recommends install -y \
-    netcat python g++ gcc dnsutils gettext \
-    libxml2-dev libxslt-dev python-dev zlib1g libssl-dev \
+    g++ python3-dev gcc gettext  \
+    libxml2-dev libxslt-dev zlib1g libssl-dev \
     python3-pip libpq-dev postgresql-client xmlsec1 \
     && rm -rf /var/lib/apt/lists/*
 
