@@ -4,8 +4,7 @@ This repository contains `docker-compose` files to build and deploy CDCS contain
 
 ## Prerequisites
 
-Install [Docker](https://docs.docker.com/engine/install/#server) first, then install [Docker Compose](https://docs.docker.com/compose/install/).
-
+All configuration files and scripts in this repository can be used with either `Docker` or `Podman`.
 
 ## Build a CDCS image
 
@@ -33,8 +32,13 @@ Below is the list of environment variables to set and their description.
 
 ### 2. Build the image
 
+**Docker:**
 ```shell
-cdcs-docker/build$ docker-compose build --no-cache
+docker compose build --no-cache
+```
+**Podman:**
+```shell
+podman compose build --no-cache
 ```
 
 ### 3. Build a custom image (optional)
@@ -60,15 +64,23 @@ To configure the image to build, edit the following variables in the `.env` file
 
 Then build the custom image.
 
-```commandline
+```shell
 cd build/custom
 vim .env
 vim packages.txt
 vim requirements.txt
 vim settings.py
-docker-compose build --no-cache
 ``` 
 
+**Docker:**
+```shell
+docker compose build --no-cache
+```
+
+**Podman:**
+```shell
+podman compose build --no-cache
+```
 ## Deploy a CDCS
 
 ### 1. Customize the deployment
@@ -392,8 +404,14 @@ use `default` (HTTP deployment with uWSGI) or `https` (HTTPS deployment with uWS
 
 ## 2. Deploy the stack
 
+**Docker:**
 ```shell
-docker-compose up -d
+docker compose up -d
+```
+
+**Podman:**
+```shell
+podman compose up -d
 ```
 
 (Optional) For testing purposes, using the HTTPS protocol, you can then run the following script to generate and copy 
@@ -408,8 +426,14 @@ The superuser is the first user that will be added to the CDCS. This is the
 main administrator on the platform. Once it has been created, more users
 can be added using the web interface. Wait for the CDCS server to start, then run:
 
+**Docker:**
 ```shell
-cdcs-docker/deploy$ ./docker_createsuperuser.sh ${username} ${password} ${email}
+./docker_createsuperuser.sh ${username} ${password} ${email}
+```
+
+**Podman:**
+```shell
+./docker_createsuperuser.sh ${username} ${password} ${email} --podman
 ```
 
 ## 4. Initialize database
@@ -419,14 +443,24 @@ some database initialization commands have been added. These commands need to be
 after the initial deployment of the application.  
 
 - To load the **modules**, run the following command:
+**Docker:**
 ```shell
 ./docker_loadmodules.sh
+```
+**Podman:**
+```shell
+./docker_loadmodules.sh --podman
 ```
 **NOTE**: If modules are added/removed from the project's `INSTALLED_APPS`, the commands needs to be run again.
 
 - To load the **exporters**, run the following command:
+**Docker:**
 ```shell
 ./docker_loadexporters.sh
+```
+**Podman:**
+```shell
+./docker_loadexporters.sh --podman
 ```
 
 ## 5. Access
@@ -496,6 +530,8 @@ NGINX_PORT_443=8443
 
 Make sure every component is running properly by checking the logs.
 For example, to check the logs of an MDCS instance (`COMPOSE_PROJECT_NAME=mdcs`), use the following commands:
+
+**Docker:**
 ```shell
 docker logs -f mdcs_cdcs
 docker logs -f mdcs_cdcs_nginx
@@ -504,8 +540,15 @@ docker logs -f mdcs_cdcs_postgres
 docker logs -f mdcs_cdcs_redis
 ```
 
+**Podman:**
+```shell
+podman logs -f mdcs_cdcs
+podman logs -f mdcs_cdcs_nginx
+podman logs -f mdcs_cdcs_mongo
+podman logs -f mdcs_cdcs_postgres
+podman logs -f mdcs_cdcs_redis
+```
 ## MongoDB RAM usage
-
 
 From https://hub.docker.com/_/mongo
 > By default, Mongo will set the wiredTigerCacheSizeGB to a value
@@ -608,14 +651,26 @@ On linux, you will need to increase the available [virtual memory](https://www.e
 
 To delete all the containers of the CDCS stack, run:
 
+**Docker:**
 ```shell
-docker-compose down
+docker compose down
+```
+
+**Podman:**
+```shell
+podman compose down
 ```
 
 To delete all containers and **all the data**, run:
 
+**Docker:**
 ```shell
-docker-compose down -v
+docker compose down -v
+```
+
+**Podman:**
+```shell
+podman compose down -v
 ```
 
 ## Upgrade the CDCS container
@@ -624,8 +679,14 @@ When a new version of a CDCS image becomes available, the system can be upgraded
 
 1. Stop the stack
 
+**Docker:**
 ```shell
-docker-compose stop
+docker compose stop
+```
+
+**Podman:**
+```shell
+podman compose stop
 ```
 
 2. Update the version of the image in `deploy/.env`:
@@ -636,14 +697,26 @@ IMAGE_VERSION=3.6.0 # set the version of the new image
 
 3. Restart the stack with the new image:
 
+**Docker:**
 ```shell
-docker-compose up -d
+docker compose up -d
+```
+
+**Podman:**
+```shell
+podman compose up -d
 ```
 
 4. Run the migration script (that will update static files and apply database migrations):
 
+**Docker:**
 ```shell
 ./docker_migrate.sh
+```
+
+**Podman:**
+```shell
+./docker_migrate.sh --podman
 ```
 
 **NOTE**: the script will do dry runs and ask for confirmation before applying the changes, but it is  
