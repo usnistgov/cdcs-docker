@@ -402,7 +402,7 @@ The Nginx configuration is a little different depending on the web server, so `S
 use `default` (HTTP deployment with uWSGI) or `https` (HTTPS deployment with uWSGI) for uWSGI, and `gunicorn_http` or `gunicorn_https` for Gunicorn.
 
 
-## 2. Deploy the stack
+### 2. Deploy the stack
 
 **Docker:**
 ```shell
@@ -420,7 +420,7 @@ self-signed certificates to the container.
 ./docker_set_ssl.sh
 ```
 
-## 3. Create a superuser
+### 3. Create a superuser
 
 The superuser is the first user that will be added to the CDCS. This is the
 main administrator on the platform. Once it has been created, more users
@@ -436,7 +436,7 @@ can be added using the web interface. Wait for the CDCS server to start, then ru
 ./docker_createsuperuser.sh ${username} ${password} ${email} --podman
 ```
 
-## 4. Initialize database
+### 4. Initialize database
 
 From CDCS 2.9, to prevent concurrency issues and avoid running database operations multiple times,
 some database initialization commands have been added. These commands need to be run once, 
@@ -463,15 +463,15 @@ after the initial deployment of the application.
 ./docker_loadexporters.sh --podman
 ```
 
-## 5. Access
+### 5. Access
 
 The CDCS is now available at the `SERVER_URI` set at deployment.
 Please read important deployment information in the [Troubleshooting](#6-troubleshooting) section below.
 
 
-## 6. Troubleshooting
+### 6. Troubleshooting
 
-## Local deployment
+#### Local deployment
 
 **DO NOT** set `HOSTNAME`, `SERVER_URI` and `ALLOWED_HOSTS` to localhost or 127.0.0.1.
 Even if the system, starts properly, some features may not work
@@ -498,14 +498,14 @@ ALLOWED_HOSTS=xxx.xxx.xxx.xxx
 ALLOWED_HOSTS=*
 ```
 
-## Production deployment
+#### Production deployment
 
 - Set `SERVER_CONF` to `https`
 - Update the file `nginx/https.conf` if necessary
 - Add HTTPS configuration to the mounted `settings.py` file
 - Have a look at the [deployment checklist](https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/#deployment-checklist)
 
-## Multiple deployments on the same machine
+#### Multiple deployments on the same machine
 
 To deploy two CDCS instances on the same machine, use the 
 docker compose environment variable [COMPOSE_PROJECT_NAME](https://docs.docker.com/compose/how-tos/environment-variables/envvars/#compose_project_name).
@@ -526,7 +526,7 @@ NGINX_PORT_80=8080
 NGINX_PORT_443=8443
 ```
 
-## Logs
+#### Logs
 
 Make sure every component is running properly by checking the logs.
 For example, to check the logs of an MDCS instance (`COMPOSE_PROJECT_NAME=mdcs`), use the following commands:
@@ -548,7 +548,7 @@ podman logs -f mdcs_cdcs_mongo
 podman logs -f mdcs_cdcs_postgres
 podman logs -f mdcs_cdcs_redis
 ```
-## MongoDB RAM usage
+#### MongoDB RAM usage
 
 From https://hub.docker.com/_/mongo
 > By default, Mongo will set the wiredTigerCacheSizeGB to a value
@@ -563,7 +563,7 @@ issue as each of them will try to use the same amount of RAM
 from the host without taking into account the amount used by other
 containers. This could lead to the server running out of memory.
 
-### How to fix it?
+##### How to fix it?
 
 The amount of RAM used by mongodb can be restricted by adding the
 `--wiredTigerCacheSizeGB` option to the mongodb command:
@@ -722,6 +722,6 @@ podman compose up -d
 **NOTE**: the script will do dry runs and ask for confirmation before applying the changes, but it is  
 recommended to create a backup of the databases before starting the migration.
 
-# Disclaimer
+## Disclaimer
 
 [NIST Disclaimer](https://www.nist.gov/disclaimer)
