@@ -517,24 +517,24 @@ NGINX_PORT_443=8443
 #### Logs
 
 Make sure every component is running properly by checking the logs.
-For example, to check the logs of an MDCS instance (`COMPOSE_PROJECT_NAME=mdcs`), use the following commands:
+For example, to check the logs of an MDCS instance (`COMPOSE_PROJECT_NAME=deploy`), use the following commands:
 
 **Docker:**
 ```shell
-docker logs -f mdcs_cdcs
-docker logs -f mdcs_cdcs_nginx
-docker logs -f mdcs_cdcs_mongo
-docker logs -f mdcs_cdcs_postgres
-docker logs -f mdcs_cdcs_redis
+docker logs -f deploy_cdcs
+docker logs -f deploy_cdcs_nginx
+docker logs -f deploy_cdcs_mongo
+docker logs -f deploy_cdcs_postgres
+docker logs -f deploy_cdcs_redis
 ```
 
 **Podman:**
 ```shell
-podman logs -f mdcs_cdcs
-podman logs -f mdcs_cdcs_nginx
-podman logs -f mdcs_cdcs_mongo
-podman logs -f mdcs_cdcs_postgres
-podman logs -f mdcs_cdcs_redis
+podman logs -f deploy_cdcs
+podman logs -f deploy_cdcs_nginx
+podman logs -f deploy_cdcs_mongo
+podman logs -f deploy_cdcs_postgres
+podman logs -f deploy_cdcs_redis
 ```
 #### MongoDB RAM usage
 
