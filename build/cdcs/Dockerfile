@@ -33,6 +33,7 @@ RUN apt-get update && apt-get --no-install-recommends install -y \
 # Setup pip
 RUN mkdir -p /root/.config/pip
 COPY pip/$PIP_CONF/pip.conf /root/.config/pip
+RUN pip install --upgrade pip
 
 # Install additional python packages
 RUN pip install psycopg2 uwsgi gunicorn[gthread]
